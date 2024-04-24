@@ -2,19 +2,57 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
+    <link rel="stylesheet" href="styles/reset.css">
+    <link rel="stylesheet" href="styles/flickity.css">
+    <link rel="stylesheet" href="styles/home-slider.css">
+    <link rel="stylesheet" href="styles/styles.css">
+    <script src="js/flickity.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Timeloop - Project</title>
+    <title>Timeshift Arcade - Home Template</title>
 </head>
 
 <body>
     <header>
-        <h1>HELLO WORLD!</h1>
+        <nav>
+            <h1>Timeshift Arcade - An online retrogaming experience</h1>
+            <ul>
+                <li><a href="">Categories</a></li>
+                <li><a href="">Sign in</a></li>
+                <li><a href="">Register</a></li>
+            </ul>
+        </nav>
     </header>
     <main>
-        <p>MIKITA MARICON</p>
+        <article>
+            <div class="main-carousel" data-flickity='{ "wrapAround": true, "contain": true, "autoPlay": 2200, "pageDots": false, "prevNextButtons": false }'>
+                <div class="carousel-cell"><img class="carousel-slide" src="images/test1.jpg"></div>
+                <div class="carousel-cell"><img class="carousel-slide" src="images/test2.jpg"></div>
+                <div class="carousel-cell"><img class="carousel-slide" src="images/test3.jpg"></div>
+                <div class="carousel-cell"><img class="carousel-slide" src="images/test4.jpg"></div>
+            </div>
+            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eaque nesciunt optio dolorem tempore, repellendus voluptate. Ipsa, eaque! Alias culpa modi provident ea, omnis, amet doloribus quae sed accusantium saepe quidem!</p>
+        </article>
+        <div id="content-wrapper-border">
+            <div id="content-wrapper">
+                <section>
+                    <h2>News!</h2>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quibusdam, quae sint ullam illum aspernatur impedit natus porro et sapiente, voluptatum aut, ipsa veniam quasi ipsam nostrum! Ratione eius quia voluptatem.</p>
+                </section>
+                <section>
+                    <h2>About us</h2>
+                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Vel, mollitia eaque! Maxime, quisquam quos? Nobis itaque adipisci, nihil officiis est tempora ratione placeat magnam error. Temporibus ut recusandae cum tempora.</p>
+                </section>
+            </div>
+        </div>
     </main>
     <footer>
-        <h1>ESTO ES UN FOOTER</h1>
+        <div id="footer-wrapper">
+            <div id="social-wrapper">
+                <a href="#"><img src="images/LogoInstagram.png" class="social"></a>
+                <a href="#"><img src="images/LogoTwitter.png" class="social"></a>
+            </div>
+            <p>© Timeshift Arcade 2024 | Designed by Timeshift Team</p>
+        </div>
     </footer>
 </body>
 </html>

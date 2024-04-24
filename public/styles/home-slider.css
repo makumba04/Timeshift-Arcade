@@ -1,0 +1,20 @@
+.main-carousel {
+    width: 85%;
+    height: 100%;
+    margin: 0 auto;
+    border: 2px dashed black;
+}
+
+.carousel-cell {
+    width: 740px;
+    height: 425px;
+    display: flex;
+    align-items: center;
+    box-sizing: border-box;
+}
+
+.carousel-slide {
+    width: 100%;
+    height: 400px;
+    object-fit: contain;
+}
