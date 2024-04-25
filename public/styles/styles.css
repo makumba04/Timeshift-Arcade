@@ -23,13 +23,13 @@ header {
     z-index: 1;
 }
 
-#TimeshiftHeaderLogo1 {
+#Timeshift-Header-Logo-1 {
     width: 17em;
     image-rendering: pixelated;
     margin-left: 40px;
 }
 
-#TimeshiftHeaderLogo2 {
+#Timeshift-Header-Logo-2 {
     font-family: Minecraftia;
     font-size: 18px;
     margin: 20px 0 0 0;
@@ -48,6 +48,8 @@ nav {
     box-sizing: border-box;
     background-color: rgba(0, 0, 0, 0.75);
     border-bottom: 2px solid white;
+    background-color: rgba(0, 0, 0, 0.75);
+    backdrop-filter: blur(10px);
     z-index: 1;
 }
 
@@ -95,6 +97,10 @@ article {
 
 article > * {
     margin: 2em;
+}
+
+#quote-home {
+    text-align: center;
 }
 
 .content-wrapper-border {
