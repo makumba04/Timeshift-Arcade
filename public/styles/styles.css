@@ -1,13 +1,38 @@
+:root {
+    --TimePink: #F72585;
+    --TimePurple: #7209B7;
+    --TimeDarkBlue: #140438;
+    --TimeBlue: #4361EE;
+    --TimeLight: #4CC9F0;
+}
+
+@font-face {
+    font-family: Minecraftia;
+    src: url(../fonts/Minecraftia-Regular.ttf);
+}
+
 body {
-    font-family: monospace;
     color: white;
-    background-color: black;
+    background-color: var(--TimeDarkBlue);
 }
 
 header {
-    position: relative;
-    background: linear-gradient(to right, red, purple);
-    padding: 3px;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1;
+}
+
+#TimeshiftHeaderLogo1 {
+    width: 17em;
+    image-rendering: pixelated;
+    margin-left: 40px;
+}
+
+#TimeshiftHeaderLogo2 {
+    font-family: Minecraftia;
+    font-size: 18px;
+    margin: 20px 0 0 0;
 }
 
 nav {
@@ -17,16 +42,12 @@ nav {
     flex-direction: row;
     position: relative;
     top: 0;
-    padding: 1rem;
+    padding: 0.75em;
     align-items: center;
     justify-content: space-between;
     box-sizing: border-box;
-    background-color: rgba(0, 0, 0, 0.6);
-    z-index: 2;
-}
-
-h1 {
-    font-size: 2.6em;
+    background-color: rgba(0, 0, 0, 0.35);
+    z-index: 1;
 }
 
 nav ul {
@@ -34,18 +55,24 @@ nav ul {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    font-size: 1.75em;
+    font-size: 1em;
+    margin-right: 3em;
 }
 
 nav a {
     text-decoration: none;
     list-style: none;
     color: white;
+    font-family: Minecraftia;
+}
+
+nav a:hover {
+    color: rgb(150, 150, 150);
 }
 
 h2 {
-    font-size: 2em;
-    margin-bottom: 0.5em;
+    font-size: 24px;
+    font-family: Minecraftia;
 }
 
 main {
@@ -55,7 +82,7 @@ main {
     box-sizing: border-box;
     justify-content: center;
     align-items: center;
-    margin-top: 2em;
+    margin-top: 13em;
 }
 
 article {
@@ -84,7 +111,9 @@ article > * {
 }
 
 p {
+    margin-top: 1.25em;
     font-size: 1.25em;
+    font-family: monospace;
 }
 
 footer {
@@ -117,7 +146,7 @@ footer {
 .social {
     width: 80px;
     height: 80px;
-    filter: grayscale(100%);
+    filter: grayscale(100%) drop-shadow(0px 0px 8px #000000);
     margin: 0 1em 0 1em;
     transition: 0.35s all ease-in-out;
 }
