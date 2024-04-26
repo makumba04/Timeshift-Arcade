@@ -1,18 +1,17 @@
 const express = require('express');
-const api = express();
+const app = express();
 
-api.use(express.static(__dirname + '/public'));
+app.use(express.static(__dirname + '/public'));
 
-api.listen(3000, ()=> {
+app.set('views', __dirname + '/views');
+app.set('view engine', 'pug');
+
+app.listen(3000, ()=> {
     console.log('Server up and running')
 });
 
 // ### RUTAS ###
 
-// app.get('/', function(req, res){
-//     if (err) throw err;
-//       res.render('index', {
-//         title: 'modelos',
-//         modelos: results
-//     });
-// });
+app.get('/', function(req, res){
+    res.render('index');
+});

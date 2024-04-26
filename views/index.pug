@@ -1,0 +1,27 @@
+extends layout.pug
+
+block content
+    main
+        article
+            div.main-carousel(data-flickity='{ "wrapAround": true, "contain": true, "autoPlay": 2200, "pageDots": false, "prevNextButtons": false }')
+                .carousel-cell
+                    img(src="/images/test1.jpg", class="carousel-slide")
+                .carousel-cell
+                    img(src="/images/test2.jpg", class="carousel-slide")
+                .carousel-cell
+                    img(src="/images/test3.jpg", class="carousel-slide")
+                .carousel-cell
+                    img(src="/images/test4.jpg", class="carousel-slide")
+            p#quote-home Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eaque nesciunt optio dolorem tempore, repellendus voluptate. Ipsa, eaque! Alias culpa modi provident ea, omnis, amet doloribus quae sed accusantium saepe quidem!
+            p#quote-home
+                i - Anonymous -
+        .content-wrapper-border 
+            .content-wrapper
+                section
+                    h2 News! 
+                    p There is still nothing to show here, but stay tuned! 
+        .content-wrapper-border 
+            .content-wrapper 
+                section 
+                    h2 About us
+                    p Timeshift Arcade is a project created by programming students that consists of providing a game service developed to work exclusively on the web. Timeshift works as a social network that also provides the opportunity to play classic video games within the most legendary sagas in the world such as Pokemon, Super Mario, The Legend of Zelda, Metal Gear Solid, Metroid and more. The games are remakes with graphic and mechanical arrangements to be able to play them comfortably and enjoy them. Timeshift also has a trophy and level system for each user within each game.               
