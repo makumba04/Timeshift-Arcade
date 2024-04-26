@@ -23,10 +23,16 @@ header {
     z-index: 1;
 }
 
+#header-logos {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
 #Timeshift-Header-Logo-1 {
     width: 17em;
     image-rendering: pixelated;
-    margin-left: 40px;
 }
 
 #Timeshift-Header-Logo-2 {
@@ -57,6 +63,7 @@ nav ul {
     width: 25%;
     display: flex;
     flex-direction: row;
+    align-items: center;
     justify-content: space-between;
     font-size: 1em;
     margin-right: 3em;
@@ -71,8 +78,12 @@ nav a {
 }
 
 nav a:hover {
-    color: rgb(150, 150, 150);
     border: 1px solid white;
+}
+
+nav a:active {
+    border-color:rgb(150, 150, 150);
+    color: rgb(150, 150, 150);
 }
 
 h2 {
@@ -108,6 +119,7 @@ article > * {
     padding: 3px;
     margin: 2em 0 3.5em 0;
     background: linear-gradient(45deg, #F72585, #7209B7, #4361EE, #4CC9F0);
+    box-shadow: 0px 0px 10px rgb(0, 0, 0);
 }
 
 .content-wrapper {
@@ -116,7 +128,54 @@ article > * {
 }
 
 .content-wrapper > * {
-    margin: 2em 1em 2em 1em;
+    margin: 1em 1em 2em 0.5em;
+}
+
+.game-block {
+    border: 1px solid black;
+    padding: 1em;
+    box-sizing: border-box;
+    background-color: rgba(115, 115, 115, 0.6);
+}
+
+h3 {
+    font-family: Minecraftia;
+    font-size: 18px
+}
+
+.game-desc {
+    display: flex;
+    flex-direction: row;
+    position: relative;
+}
+
+.game-image {
+    width: 20% !important;
+}
+
+.game-desc-txt {
+    padding: 1em;
+}
+
+.game-desc button {
+    width: 10em;
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    font-family: Minecraftia;
+    font-size: 16px;
+    color: white;
+    background-color: rgba(0, 0, 0, 0);
+    border: none;
+}
+
+.game-desc button:hover {
+    border: 1px solid white;
+}
+
+.game-desc button:active {
+    border: 1px solid rgb(225, 225, 225);
+    color: rgb(225, 225, 225);
 }
 
 p {
