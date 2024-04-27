@@ -21,6 +21,8 @@ header {
     top: 0;
     width: 100%;
     z-index: 1;
+    background-color: rgba(0, 0, 0, 0.15);
+    backdrop-filter: blur(10px);
 }
 
 #header-logos {
@@ -54,8 +56,6 @@ nav {
     box-sizing: border-box;
     background-color: rgba(0, 0, 0, 0.75);
     border-bottom: 2px solid white;
-    background-color: rgba(0, 0, 0, 0.75);
-    backdrop-filter: blur(10px);
     z-index: 1;
 }
 
