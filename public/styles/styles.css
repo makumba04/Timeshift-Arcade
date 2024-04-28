@@ -74,7 +74,7 @@ nav a {
     list-style: none;
     color: white;
     font-family: Minecraftia;
-    padding: 0.5em 1em 0 1em;
+    padding: 5px 10px 2px 10px;
 }
 
 nav a:hover {
