@@ -20,32 +20,38 @@ header {
     position: fixed;
     top: 0;
     width: 100%;
+    height: auto;
     z-index: 1;
     background-color: rgba(0, 0, 0, 0.15);
     backdrop-filter: blur(10px);
 }
 
 #header-logos {
+    width: auto;
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    align-items: center;
 }
 
 #Timeshift-Header-Logo-1 {
-    width: 17em;
+    position: fixed;
+    top: 20px;
+    left: 15px;
+    width: 16em;
+    margin: 0;
     image-rendering: pixelated;
 }
 
 #Timeshift-Header-Logo-2 {
+    position: fixed;
+    top: 79px;
+    left: 43px;
     font-family: Minecraftia;
-    font-size: 18px;
-    margin: 20px 0 0 0;
+    font-size: 16px;
 }
 
 nav {
     width: 100%;
-    height: auto;
+    height: 118px;
     display: flex;
     flex-direction: row;
     position: relative;
@@ -55,8 +61,11 @@ nav {
     justify-content: space-between;
     box-sizing: border-box;
     background-color: rgba(0, 0, 0, 0.75);
-    border-bottom: 2px solid white;
-    z-index: 1;
+    background-image: url(../images/Header-Background.png);
+    background-repeat: no-repeat;
+    background-size: cover;
+    z-index: 2;
+    image-rendering: pixelated;
 }
 
 nav ul {
@@ -65,25 +74,31 @@ nav ul {
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
-    font-size: 1em;
-    margin-right: 3em;
+    font-size: 12px;
+    margin: 2px 3em 0 0;
+}
+
+nav li {
+    padding: 10px 5px 0 5px;
+    border: 1px solid #588b2c;
+}
+
+nav li:hover {
+    border: 1px solid #99F04C;
+    -webkit-box-shadow: 0px 0px 10px 0px #99F04C;
+    -moz-box-shadow: 0px 0px 10px 0px #99F04C;
+    box-shadow: 0px 0px 10px 0px #99F04C;
+}
+
+nav li:hover a {
+    color: white;
 }
 
 nav a {
     text-decoration: none;
     list-style: none;
-    color: white;
+    color: rgb(195, 195, 195);
     font-family: Minecraftia;
-    padding: 5px 10px 2px 10px;
-}
-
-nav a:hover {
-    border: 1px solid white;
-}
-
-nav a:active {
-    border-color:rgb(150, 150, 150);
-    color: rgb(150, 150, 150);
 }
 
 h2 {
@@ -98,7 +113,7 @@ main {
     box-sizing: border-box;
     justify-content: center;
     align-items: center;
-    margin-top: 13em;
+    margin-top: 10em;
 }
 
 article {
