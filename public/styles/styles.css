@@ -45,7 +45,7 @@ header {
 #Timeshift-Header-Logo-2 {
     position: fixed;
     top: 79px;
-    left: 48px;
+    left: 52px;
     font-family: Minecraftia;
     font-size: 16px;
 }
@@ -82,6 +82,7 @@ nav ul {
 nav li {
     padding: 10px 5px 0 5px;
     border: 1px solid #588b2c;
+    transition: border 0.25s ease-in-out, box-shadow 0.25s ease-in-out;
 }
 
 nav li:hover {
@@ -174,8 +175,9 @@ h3 {
     padding: 1em;
 }
 
-.game-desc button {
+.game-desc-txt button {
     width: 10em;
+    padding: 10px 0 0 0;
     position: absolute;
     right: 0;
     bottom: 0;
