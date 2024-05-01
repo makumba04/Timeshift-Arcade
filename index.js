@@ -41,13 +41,23 @@ app.get('/admin-panel', function(req, res){
     res.render('admin-panel')
 });
 
+app.get('/categories', function(req, res){
+    db.query('SELECT * FROM category', (err, results) => {
+        if (err) throw err;
+        res.render('categories', {
+            title: 'categories',
+            categories: results
+        });
+    })
+});
+
 app.get('/games/:id', function(req, res){
     const {id} = req.params;
     db.query('SELECT * FROM game WHERE game_id = ?', [id], (err, results) => {
         if (err) throw err;
         res.render('game', {
-            title: 'game_data',
-            game_data: results
+            title: 'game',
+            game: results[0]
         });
     })
 });

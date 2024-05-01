@@ -158,6 +158,10 @@ main {
 }
 
 article {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
     width: 90%;
     text-align: center;
 }
@@ -188,6 +192,8 @@ article > * {
 }
 
 .content-wrapper {
+    display: flex;
+    flex-direction: column;
     padding: 1rem;
     background-color: rgba(85, 85, 85, 0.75);
 }
@@ -245,11 +251,25 @@ h3 {
     color: rgb(225, 225, 225);
 }
 
+.game-view {
+    border: 1px solid black;
+    width: 100%;
+    margin: 0 auto;
+}
+
 p {
     margin-top: 1.25em;
     font-size: 1.25em;
     font-family: monospace;
     text-align: justify;
+}
+
+.return-arrow {
+    image-rendering: pixelated;
+    width: 2.5em;
+    position: fixed;
+    top: 135px;
+    left: 20px;
 }
 
 footer {

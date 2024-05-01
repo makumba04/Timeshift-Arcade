@@ -2,10 +2,21 @@ extends layout.pug
 
 block content
     main
-        .content-wrapper-border
-            .content-wrapper
-                .game-side-menu
+        a(href="/") 
+            img(src="/images/return-arrow.png", class="return-arrow")
         article
             .content-wrapper-border
                 .content-wrapper
+                    h2 #{game.game_name}
                     .game-view
+            
+            .content-wrapper-border
+                .content-wrapper
+                    h2 How to play
+                    p.htp-txt #{game.htp}
+block scripts
+    script.
+        var game_name = '#{game.game_name}';
+        var oldTitle = document.title;
+        var newTitle = oldTitle + ' - ' + game_name;
+        document.title = newTitle; 
