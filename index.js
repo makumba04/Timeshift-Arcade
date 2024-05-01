@@ -1,5 +1,9 @@
-const express = require('express');
-const app = express();
+// ### APP ###
+
+// Definimos las dos constantes principales
+const express = require('express'); // El handler del constructor de ExpressJS
+const app = express(); // El handler de la propia app creado por el constructor de express
+const mysql = require('mysql2'); // El handler para crear la conexión a base de datos
 
 app.use(express.static(__dirname + '/public'));
 
@@ -10,21 +14,40 @@ app.listen(3000, ()=> {
     console.log('Server up and running')
 });
 
+// ### CONEXION BD ###
+
+const db = mysql.createConnection({
+    host: 'localhost',
+    user: 'root',
+    password: '',
+    database: 'timeshiftdb',
+});
+  
+db.connect((err) => {
+    if (err) {
+      console.error('Error connecting to MySQL:', err);
+      return;
+    }
+    console.log('Connected to MySQL database');
+});
+
 // ### RUTAS ###
 
 app.get('/', function(req, res){
     res.render('index');
 });
 
-// Hay que crear la BD y las tablas antes de correr esto
+app.get('/admin-panel', function(req, res){
+    res.render('admin-panel')
+});
 
-// app.get('/games/:id', function(req, res){
-//     const {id} = req.params;
-//     // db.query('SELECT modelos.nombreModelo, modelos.intro, modelos.historia, modelos.legado, generaciones.id, generaciones.rutaPortada, generaciones.nombreGeneracion, generaciones.periodo FROM modelos INNER JOIN generaciones ON modelos.id = generaciones.modelo_id WHERE modelos.id = ?', [id], (err, results) => {
-//     //   if (err) throw err;
-//     //   res.render('ModelTemplate', {
-//     //     title: 'modelo',
-//     //     modelo: results
-//     //   });
-//     // })
-// });
+app.get('/games/:id', function(req, res){
+    const {id} = req.params;
+    db.query('SELECT * FROM game WHERE game_id = ?', [id], (err, results) => {
+        if (err) throw err;
+        res.render('game', {
+            title: 'game_data',
+            game_data: results
+        });
+    })
+});

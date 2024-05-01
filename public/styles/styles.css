@@ -69,6 +69,20 @@ nav {
     image-rendering: pixelated;
 }
 
+nav#admin-panel-nav {
+    background-image: url(../images/Header-Background-admin.png);
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+nav#admin-panel-nav ul {
+    width: auto;
+}
+
+nav#admin-panel-nav li {
+    margin-left: -85px;
+}
+
 nav ul {
     width: 25%;
     display: flex;
@@ -118,9 +132,42 @@ main {
     margin-top: 10em;
 }
 
+#admin-panel-main {
+    display: flex;
+    flex-direction: row;
+    margin-top: 7.4em;
+}
+
+#admin-panel-sidemenu{
+    width: 15%;
+    margin: 100px 0 0 50px;
+
+}
+
+#admin-panel-sidemenu ul {
+    margin: 0 auto;
+}
+
+#admin-panel-sidemenu li {
+    margin: 10px;
+    transition: margin-left 0.25s ease-in-out;
+}
+
+#admin-panel-sidemenu li:hover {
+    margin-left: 25px;
+}
+
 article {
     width: 90%;
     text-align: center;
+}
+
+#admin-panel-main article {
+    width: 85%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 
 article > * {
@@ -137,6 +184,7 @@ article > * {
     margin: 2em 0 3.5em 0;
     background: linear-gradient(45deg, #F72585, #7209B7, #4361EE, #4CC9F0);
     box-shadow: 0px 0px 10px rgb(0, 0, 0);
+    box-sizing: content-box;
 }
 
 .content-wrapper {
@@ -215,6 +263,14 @@ footer {
     background-color: rgb(85, 85, 85);
     z-index: 2;
     box-shadow: inset 0px 0px 10px rgba(0,0,0,0.9)
+}
+
+#admin-panel-footer {
+    width: 100%;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    box-sizing: border-box;
 }
 
 #footer-wrapper {
