@@ -14,4 +14,9 @@ block content
         article
             h2 Manage everything from here boss!
             .content-wrapper-border
-                    .content-wrapper
+                    .content-wrapper 
+block scripts
+    script.
+        var oldTitle = document.title;
+        var newTitle = oldTitle + ' - Admin panel';
+        document.title = newTitle; 

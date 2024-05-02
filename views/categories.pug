@@ -1,1 +1,10 @@
 extends layout.pug
+
+block content 
+    main
+        article
+block scripts 
+    script.
+        var oldTitle = document.title;
+        var newTitle = oldTitle + ' - Categories';
+        document.title = newTitle; 

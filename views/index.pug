@@ -4,17 +4,12 @@ block content
     main
         article
             div.main-carousel(data-flickity='{ "wrapAround": true, "contain": true, "autoPlay": 2200, "pageDots": false, "prevNextButtons": false }')
-                .carousel-cell
-                    img(src="/images/test1.jpg", class="carousel-slide")
-                .carousel-cell
-                    img(src="/images/test2.jpg", class="carousel-slide")
-                .carousel-cell
-                    img(src="/images/test3.jpg", class="carousel-slide")
-                .carousel-cell
-                    img(src="/images/test4.jpg", class="carousel-slide")
+                for i in [1, 2, 3, 4]
+                    .carousel-cell
+                        img(src=`/images/home-slider/test${i}.jpg`, class="carousel-slide")
             p#quote-home Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eaque nesciunt optio dolorem tempore, repellendus voluptate. Ipsa, eaque! Alias culpa modi provident ea, omnis, amet doloribus quae sed accusantium saepe quidem!
             p#quote-home
-                i - Anonymous -
+                i - Chema, el de Aida -
         .content-wrapper-border 
             .content-wrapper
                 section#news
@@ -23,30 +18,15 @@ block content
         .content-wrapper-border 
             .content-wrapper
                 h2 Try some games!
-                section.game-block
-                    .game-desc 
-                        img(src="/images/games-front/space-invaders-title.jpg", class="game-image")
-                        div.game-desc-txt
-                            h3 Space Invaders
-                            p In the classic arcade game "Space Invaders", players assume the role of a lone defender against an alien invasion. Armed with a laser cannon, they must thwart waves of descending extraterrestrial attackers hell-bent on Earth's destruction. As the relentless onslaught intensifies, players must dodge enemy fire, strategically maneuvering their spacecraft to obliterate the invaders before they breach the planet's defenses. With each advancing level, the aliens increase in speed and aggression, testing the player's reflexes and precision. Only the most skilled defenders can repel the relentless alien horde and secure humanity's survival in this timeless battle for the cosmos.
-                            a(href="/games/1")
-                                button Play
-                section.game-block
-                    .game-desc 
-                        img(src="/images/games-front/arkanoid-title.jpg", class="game-image")
-                        div.game-desc-txt
-                            h3 Arkanoid
-                            p In the arcade classic "Arkanoid", players embark on an exhilarating journey through space as they control a paddle-shaped spaceship armed with a powerful energy ball. Their mission: to demolish a formidable wall of bricks, each containing power-ups, points, and perils. With deft maneuvering and precise timing, players bounce the energy ball off their paddle, strategically destroying bricks while avoiding deadly hazards and enemy fire. As they progress through increasingly challenging levels, they encounter formidable bosses and intricate mazes, testing their skill and determination. Only the most adept pilots can conquer the cosmic labyrinth and emerge victorious in this addictive arcade adventure.
-                            a(href="/games/1")
-                                button Play
-                section.game-block
-                    .game-desc 
-                        img(src="/images/games-front/tetris-title.png", class="game-image")
-                        div.game-desc-txt
-                            h3 Tetris
-                            p In the iconic puzzle game "Tetris", players dive into a mesmerizing world of falling geometric shapes known as Tetriminos. With quick thinking and precision, they must rotate and arrange these blocks to complete solid lines, causing them to vanish and clear space. As the pace quickens and the Tetriminos fall with increasing speed, players face a race against time to prevent the stack from reaching the top. With each successful line cleared, they earn points and advance to higher levels, where the challenge escalates. With its simple yet addictive gameplay, "Tetris" captivates players with its timeless pursuit of order amidst chaos.
-                            a(href="/games/1")
-                                button Play
+                for game in featured
+                    section.game-block
+                        .game-desc 
+                            img(src=`/images/games-cover${game.game_cover}`, class="game-image")
+                            div.game-desc-txt
+                                h3 #{game.game_name}
+                                p #{game.game_description}
+                                a(href=`/games/${game.game_id}`)
+                                    button Play
         .content-wrapper-border 
             .content-wrapper 
                 section 

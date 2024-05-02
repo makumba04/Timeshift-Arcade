@@ -1,0 +1,27 @@
+extends layout.pug 
+
+block content 
+    main 
+        article
+            h2#form-h2 Register
+            .content-wrapper-border
+                #form-wrapper.content-wrapper
+                    #form
+                        p 
+                        | Username
+                        input(type="text")
+                        p 
+                        | Email
+                        input(type="text")
+                        p 
+                        | Password
+                        input(type="text")
+                        p 
+                        | Confirm password
+                        input(type="text")
+                    button.submit-btn(type="submit") Enviar
+block scripts
+    script.
+        var oldTitle = document.title;
+        var newTitle = oldTitle + ' - Register';
+        document.title = newTitle; 
