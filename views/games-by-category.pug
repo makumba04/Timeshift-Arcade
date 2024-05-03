@@ -1,0 +1,20 @@
+extends layout.pug 
+
+block content
+    main 
+        article
+            h2 #{games[0].category_name} games
+            #games-by-category-container.content-wrapper-border 
+                .content-wrapper
+                    if games.length > 0
+                        for game in games 
+                            section.game-block
+                                .game-desc 
+                                    img(src=`${game.game_cover}`, class="game-image")
+                                    div.game-desc-txt
+                                        h3 #{game.game_name}
+                                        p #{game.game_description}
+                                        a(href=`/games/${game.game_id}`)
+                                            button Play
+                    else
+                        h2 There's nothing to show here yet

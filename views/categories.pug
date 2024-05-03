@@ -3,6 +3,16 @@ extends layout.pug
 block content 
     main
         article
+            h2#categories-title Categories
+            .content-wrapper-border
+                .content-wrapper
+                    #category-grid 
+                        for category in categories
+                                .category-container
+                                    .category-container-img
+                                        img(src=`${category.category_cover}`)                            
+                                    a(href=`/games_category/${category.category_id}`) 
+                                        h3 #{category.category_name}
 block scripts 
     script.
         var oldTitle = document.title;

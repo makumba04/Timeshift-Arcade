@@ -18,15 +18,18 @@ block content
         .content-wrapper-border 
             .content-wrapper
                 h2 Try some games!
-                for game in featured
-                    section.game-block
-                        .game-desc 
-                            img(src=`/images/games-cover${game.game_cover}`, class="game-image")
-                            div.game-desc-txt
-                                h3 #{game.game_name}
-                                p #{game.game_description}
-                                a(href=`/games/${game.game_id}`)
-                                    button Play
+                if featured.length > 0
+                    for game in featured
+                        section.game-block
+                            .game-desc 
+                                img(src=`${game.game_cover}`, class="game-image")
+                                div.game-desc-txt
+                                    h3 #{game.game_name}
+                                    p #{game.game_description}
+                                    a(href=`/games/${game.game_id}`)
+                                        button Play
+                else
+                    h2 There's nothing to show here yet
         .content-wrapper-border 
             .content-wrapper 
                 section 

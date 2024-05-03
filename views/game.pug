@@ -2,18 +2,23 @@ extends layout.pug
 
 block content
     main
-        a(href="/") 
-            img(src="/images/return-arrow.png", class="return-arrow")
+        //- a(href="/") 
+        //-     img(src="/images/return-arrow.png", class="return-arrow")
         article
             .content-wrapper-border
                 .content-wrapper
                     h2 #{game.game_name}
                     .game-view
-            
             .content-wrapper-border
                 .content-wrapper
                     h2 How to play
                     p.htp-txt #{game.htp}
+            .content-wrapper-border
+                .content-wrapper
+                    h2 Synopsis
+                    p.htp-txt #{game.game_description}
+
+            
 block scripts
     script.
         var oldTitle = document.title;

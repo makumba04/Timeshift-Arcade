@@ -5,9 +5,10 @@ const express = require('express'); // El handler del constructor de ExpressJS
 // const dotenv = require('dotenv'); // El handler para cargar variables de entorno
 const mysql = require('mysql2'); // El handler para crear la conexión a base de datos
 const app = express(); // El handler de la propia app creado por el constructor de express
-
+const favicon = require('serve-favicon');
 
 app.use(express.static(__dirname + '/public'));
+app.use(favicon(__dirname + '/public/images/favicon.ico'));
 
 app.set('views', __dirname + '/views');
 app.set('view engine', 'pug');
@@ -72,10 +73,18 @@ app.get('/games/:id', function(req, res){
     })
 });
 
-// app.get('/login', function(req, res){
-//     res.render('login');
-// });
+// IMPORTANTE!!!! PARA QUE MUESTRE EL NOMBRE DE CATEGORIA DEBE HABER AL MENOS UN JUEGO DENTRO DE LA MISMA
+app.get('/games_category/:id', function(req, res){
+    const {id} = req.params;
+    db.query('SELECT * FROM game INNER JOIN category ON category.category_id = game.category_type WHERE game.category_type = ?', [id], (err, results) => {
+        if (err) throw err;
+        res.render('games-by-category', {
+            title: 'games',
+            games: results
+        });
+    })
+});
 
-app.get('/register', function(req, res){
-    res.render('register');
+app.get('/auth', function(req, res){
+    res.render('auth');
 });

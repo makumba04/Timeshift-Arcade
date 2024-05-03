@@ -84,13 +84,13 @@ nav#admin-panel-nav li {
 }
 
 nav ul {
-    width: 25%;
+    width: 12.5%;
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
     font-size: 12px;
-    margin: 2px 3em 0 0;
+    margin: 5px 3.8em 0 0;
 }
 
 nav li {
@@ -182,6 +182,10 @@ article > * {
     text-align: center;
 }
 
+#games-by-category-container {
+    margin: 2.5em 0 5em 0;
+}
+
 .content-wrapper-border {
     width: 70%;
     padding: 3px;
@@ -200,6 +204,65 @@ article > * {
 
 .content-wrapper > * {
     margin: 1em 1em 2em 0.5em;
+}
+
+#categories-title {
+    margin: 0;
+}
+
+#category-grid{
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+    grid-column-gap: 10px;
+    grid-row-gap: 10px;
+}
+
+.category-container {
+    height: 20rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    border: 1px solid white;
+    background-color: rgba(128, 128, 128, 0.35);
+}
+
+.category-container a {
+    text-decoration: none;
+}
+
+.category-container h3 {
+    width: 100%;
+    height: 24px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    padding: 15px 8px 7px 8px;
+    margin-bottom: 10px;
+}
+
+.category-container h3:hover {
+    border: 1px solid white;    
+}
+
+.category-container h3:active {
+    border: 1px solid rgb(225, 225, 225);
+    color: rgb(225, 225, 225);
+}
+
+.category-container-img {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: calc(100% - 16px);
+}
+
+.category-container-img img {
+    image-rendering: pixelated;
+    width: 50%;
 }
 
 .game-block {
