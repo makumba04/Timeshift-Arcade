@@ -1,0 +1,25 @@
+extends layout-user.pug
+
+block append head 
+    - var isProfilePage = true
+
+block content
+    main 
+        article
+            .content-wrapper-border
+                .content-wrapper
+                    section#user-profile
+                        img(src="/images/games-cover/pokemonred.jpg", class="profile-pic")
+                        .profile-data
+                            h3 #{user_data.username}
+                            a(href="/auth/logout" method="GET")
+                                button Log out
+            .content-wrapper-border
+                .content-wrapper
+                
+
+block scripts
+    script.
+        var oldTitle = document.title;
+        var newTitle = oldTitle + ' - Profile';
+        document.title = newTitle;

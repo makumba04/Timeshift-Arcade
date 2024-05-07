@@ -21,13 +21,8 @@ html(lang='en')
                 ul 
                     li
                         a(href="/categories") Categories
-                    
-                    if isLoggedIn
-                        li
-                            a(href=`/my_profile/${user_id}`) Profile
-                    else
-                        li 
-                            a(href="/auth") Login
+                    li 
+                        a(href="/") Home
         block content
         block scripts
         footer

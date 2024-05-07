@@ -39,4 +39,17 @@ block scripts
     script.
         var oldTitle = document.title;
         var newTitle = oldTitle + ' - Home';
-        document.title = newTitle; 
+        document.title = newTitle;
+
+        // Check if the loginSuccess query parameter is present in the URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const loginSuccess = urlParams.get('loginSuccess');
+
+        const alertShown = localStorage.getItem('loginAlertShown');
+
+        // If loginSuccess is 'true' and alert has not been shown before, display the alert
+        if (loginSuccess === 'true' && !alertShown) {
+            alert('Login successful!');
+            // Set a flag in local storage to indicate that the alert has been shown
+            localStorage.setItem('loginAlertShown', 'true');
+        }

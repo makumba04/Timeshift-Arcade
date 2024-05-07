@@ -3,25 +3,35 @@ extends layout.pug
 block content 
     main 
         article
-            h2#form-h2 Register
             .content-wrapper-border
                 #form-wrapper.content-wrapper
-                    #form
-                        p 
+                    form#register.form(action="/auth/register" method="POST")
+                        h2 Register
+                        p
                         | Username
-                        input(type="text")
+                        input(type="text", name="username")
+                        p
+                        | Email
+                        input(type="text", name="email")
+                        p
+                        | Password
+                        input(type="password", name="password")
+                        p
+                        | Confirm password
+                        input(type="password", name="confirmPassword")
+                        button.submit-btn(type="submit") Enviar
+                        
+                    form#login.form(action="/auth/login" method="POST")
+                        h2 Login
                         p 
                         | Email
-                        input(type="text")
+                        input(type="text", name="email")
                         p 
                         | Password
-                        input(type="text")
-                        p 
-                        | Confirm password
-                        input(type="text")
-                    button.submit-btn(type="submit") Enviar
+                        input(type="text", name="password")
+                        button.submit-btn(type="submit") Enviar
 block scripts
     script.
         var oldTitle = document.title;
-        var newTitle = oldTitle + ' - Register';
+        var newTitle = oldTitle + ' - Authentication';
         document.title = newTitle; 

@@ -300,18 +300,19 @@ h3 {
     bottom: 0;
     font-family: Minecraftia;
     font-size: 16px;
-    color: white;
+    color: rgb(200, 200, 200);
     background-color: rgba(0, 0, 0, 0);
-    border: none;
+    border: 1px solid rgb(200, 200, 200);
 }
 
-.game-desc button:hover {
-    border: 1px solid white;
+.game-desc-txt button:hover {
+    border: 1px solid rgb(225, 225, 225);
+    color: rgb(225, 225, 225);
 }
 
 .game-desc button:active {
-    border: 1px solid rgb(225, 225, 225);
-    color: rgb(225, 225, 225);
+    border: 1px solid rgb(200, 200, 200);
+    color: rgb(200, 200, 200);
 }
 
 .game-view {
@@ -392,8 +393,9 @@ footer {
     margin: 15px 0 25px 0;
 }
 
-#form {
+.form {
     width: 50%;
+    height: 100%;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -404,14 +406,19 @@ footer {
     box-shadow: 0px 0px 10px rgb(0, 0, 0);
     font-family: monospace;
     font-size: 18px;
-    padding: 0 0 40px 0;
-    margin: 50px 0 0 0;
+    padding: 40px 0 30px 0;
+    margin: 0 10px 0 10px;
     border: 1px solid grey;
 }
 
+#form-wrapper {
+    display: flex;
+    flex-direction: row;
+}
+
 .submit-btn {
-    border: 1px solid white;
-    color: white;
+    border: 1px solid black;
+    color: black;
     padding: 8px 20px 0 25px;
     margin: 25px 0 25px 0;
     background-color: rgba(0, 0, 0, 0);
@@ -419,5 +426,42 @@ footer {
 }
 
 .submit-btn:hover {
+    border-color: grey;
+    color: grey;
     cursor: pointer;
+}
+
+.submit-btn:active {
+    border-color: black;
+    color: black;
+}
+
+#user-profile {
+    display: flex;
+    flex-direction: row;
+    padding: 0.5em;
+    margin: 0;
+    background-color: rgba(115, 115, 115, 0.6);
+    border: 1px solid black;
+}
+
+.profile-pic {
+    width: 20% !important;
+    object-fit: contain;
+}
+
+.profile-data {
+    width: 80%;
+    padding: 1em;
+    position: relative;
+}
+
+.profile-data h3 {
+    text-align: left !important;
+}
+
+.profile-data button {
+    position: absolute;
+    bottom: 0;
+    right: 0;
 }
