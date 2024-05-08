@@ -18,3 +18,9 @@ block content
                                             button Play
                     else
                         h2 There's nothing to show here yet
+block scripts
+    script.
+        var category_name = '#{games[0].category_name}'
+        var oldTitle = document.title;
+        var newTitle = oldTitle + ' - ' + category_name + ' games';
+        document.title = newTitle;

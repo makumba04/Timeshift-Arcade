@@ -35,21 +35,3 @@ block content
                 section 
                     h2 About us
                     p Timeshift Arcade is a project created by a group of programming students that consists of providing a game service developed to work exclusively on the web. Timeshift works as a social network that also provides the opportunity to play classic video games within the most legendary sagas in the world such as Pokemon, Super Mario, The Legend of Zelda, Metal Gear Solid, Metroid and more. The games are remakes with graphic and mechanical arrangements to be able to play them comfortably and enjoy them. Timeshift also has a trophy and level system for each user within each game.
-block scripts
-    script.
-        var oldTitle = document.title;
-        var newTitle = oldTitle + ' - Home';
-        document.title = newTitle;
-
-        // Check if the loginSuccess query parameter is present in the URL
-        const urlParams = new URLSearchParams(window.location.search);
-        const loginSuccess = urlParams.get('loginSuccess');
-
-        const alertShown = localStorage.getItem('loginAlertShown');
-
-        // If loginSuccess is 'true' and alert has not been shown before, display the alert
-        if (loginSuccess === 'true' && !alertShown) {
-            alert('Login successful!');
-            // Set a flag in local storage to indicate that the alert has been shown
-            localStorage.setItem('loginAlertShown', 'true');
-        }

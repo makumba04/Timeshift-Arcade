@@ -61,8 +61,39 @@ app.get('/', function(req, res){
     })
 });
 
-app.get('/admin-panel', function(req, res){
+function requireAdmin(req, res, next) {
+    const user_role = req.session.userRoleLevel;
+
+    if(user_role != 3) {
+        res.status(403).send("You don't have the authorization to enter this page");
+    } else {
+        next();
+    }
+}
+
+app.get('/admin-panel', requireAdmin, function(req, res){
     res.render('admin-panel')
+});
+
+app.get('/admin_panel_categories', (req, res) => {
+    db.query('SELECT * FROM category', (err, results) =>{
+      if(err) throw err;
+      res.json(results)
+    });
+});
+
+app.get('/admin_panel_games', (req, res) => {
+    db.query('SELECT * FROM game', (err, results) =>{
+      if(err) throw err;
+      res.json(results)
+    });
+});
+
+app.get('/admin_panel_users', (req, res) => {
+    db.query('SELECT * FROM users', (err, results) =>{
+      if(err) throw err;
+      res.json(results)
+    });
 });
 
 app.get('/my_profile/:userId', function(req, res){
@@ -171,6 +202,7 @@ app.post("/auth/login", async (req, res) => {
 
         // Set session variable for authentication
         req.session.userId = user[0].user_id;
+        req.session.userRoleLevel = user[0].user_role; // Save user's role level
         req.session.isLoggedIn = true; // Flag indicating user is logged in
 
         // Redirect the user to the main page with a success message
@@ -191,7 +223,7 @@ app.get("/auth/logout", (req, res) => {
             res.status(500).send("An error occurred while logging out");
         } else {
             // Redirect to home page after logout
-            res.redirect("/");
+            res.redirect("/auth");
         }
     });
 });

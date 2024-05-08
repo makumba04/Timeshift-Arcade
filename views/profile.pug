@@ -12,14 +12,17 @@ block content
                         img(src="/images/games-cover/pokemonred.jpg", class="profile-pic")
                         .profile-data
                             h3 #{user_data.username}
+                            p Lorem ipsum dolor sit amet consectetur adipisicing elit. Sequi id officiis et porro nisi qui, corrupti temporibus illum repellat odit sed nobis. Earum, ea! Impedit perferendis distinctio nemo fugit natus.
                             a(href="/auth/logout" method="GET")
                                 button Log out
             .content-wrapper-border
                 .content-wrapper
+                    h3 My games
                 
 
 block scripts
     script.
+        var username = '#{user_data.username}';
         var oldTitle = document.title;
-        var newTitle = oldTitle + ' - Profile';
+        var newTitle = oldTitle + ' - ' + username;
         document.title = newTitle;

@@ -2,21 +2,31 @@ extends layout-admin.pug
 
 block content
     main#admin-panel-main
-        .content-wrapper-border#admin-panel-sidemenu
-            .content-wrapper 
-                ul
-                    li 
-                        h3 Categories
-                    li
-                        h3 Games
-                    li
-                        h3 Users
-        article
-            h2 Manage everything from here, boss!
-            .content-wrapper-border
-                    .content-wrapper 
+        h2 Manage everything from here, boss!
+        article#admin-panel-article
+            #admin-panel-sidemenu
+                .content-wrapper-border
+                    .content-wrapper
+                        ul
+                            li 
+                                a(onclick='searchAllCategories()')
+                                    h3 Categories
+                            li
+                                a(onclick='searchAllGames()') 
+                                    h3 Games
+                            li
+                                a(onclick='searchAllUsers()') 
+                                        h3 Users
+            #admin-panel-data
+                .content-wrapper-border
+                        .content-wrapper
+                            #content-table
 block scripts
     script.
         var oldTitle = document.title;
         var newTitle = oldTitle + ' - Admin panel';
-        document.title = newTitle; 
+        document.title = newTitle;
+
+        document.addEventListener('DOMContentLoaded', function(){
+            searchAllCategories();
+        })

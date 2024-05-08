@@ -21,6 +21,7 @@ block content
             
 block scripts
     script.
+        var game_name = '#{game.game_name}';
         var oldTitle = document.title;
         var newTitle = oldTitle + ' - ' + game_name;
         document.title = newTitle; 
