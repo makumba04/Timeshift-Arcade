@@ -26,6 +26,9 @@ html(lang='en')
                     if isLoggedIn
                         li
                             a(href=`/my_profile/${user_id}`) Profile
+                    else if isAuthPage || isProfilePage
+                        li
+                            a(href='/') Home
                     else
                         li 
                             a(href="/auth") Login

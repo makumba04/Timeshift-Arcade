@@ -10,20 +10,51 @@
 
 .form {
   width: 50%;
-  height: 100%;
+  height: 400px;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
-  color: black;
-  background-color: white;
+  color: white;
+  background-color: rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(10px);
   border-radius: 10px;
   box-shadow: 0px 0px 10px rgb(0, 0, 0);
   font-family: monospace;
   font-size: 18px;
-  padding: 40px 0 30px 0;
+  padding: 50px 0 30px 0;
   margin: 0 10px 0 10px;
-  border: 1px solid grey;
+  border: 1px solid white;
+}
+
+#login, #register {
+  display: flex;
+  flex-direction: column;
+}
+
+input {
+  width: 20em;
+  height: 1.6em;
+  color: white;
+  margin: 10px 0 10px 0;
+  padding: 5px;
+  background-color: rgba(0, 0, 0, 0.5);
+  border: none;
+  border-bottom: 2px solid white;
+}
+
+input::placeholder{
+  font-family: monospace;
+  font-size: 1.2em;
+  color: white;
+}
+
+input:focus::placeholder{
+  color: transparent;
+}
+
+.form > * {
+  z-index: 4;
 }
 
 #form-wrapper {
@@ -32,21 +63,22 @@
 }
 
 .submit-btn {
-  border: 1px solid black;
-  color: black;
-  padding: 8px 20px 0 25px;
+  border: 1px solid white;
+  color: white;
+  padding: 10px 25px 10px 25px;
   margin: 25px 0 25px 0;
   background-color: rgba(0, 0, 0, 0);
-  font-family: Minecraftia;
+  font-family: monospace;
+  font-size: 1em;
 }
 
 .submit-btn:hover {
-  border-color: grey;
-  color: grey;
+  border-color: rgb(200, 200, 200);
+  color: rgb(200, 200, 200);
   cursor: pointer;
 }
 
 .submit-btn:active {
-  border-color: black;
-  color: black;
+  border-color: white;
+  color: white;
 }

@@ -1,35 +1,27 @@
 extends layout.pug 
 
+block append head 
+    - var isAuthPage = true
+
 block content 
     main 
         article
             .content-wrapper-border
                 #form-wrapper.content-wrapper
-                    form#register.form(action="/auth/register" method="POST")
+                    form.form(action="/auth/register" method="POST" autocomplete="off")    
                         h2 Register
-                        p
-                        | Username
-                        input(type="text", name="username")
-                        p
-                        | Email
-                        input(type="email", name="email")
-                        p
-                        | Password
-                        input(type="password", name="password")
-                        p
-                        | Confirm password
-                        input(type="password", name="confirmPassword")
-                        button.submit-btn(type="submit") Enviar
-                        
-                    form#login.form(action="/auth/login" method="POST")
+                        div#register
+                            input(type="text", name="username", placeholder="Username")
+                            input(type="email", name="email", placeholder="Email")
+                            input(type="password", name="password", placeholder="Password")
+                            input(type="password", name="confirmPassword", placeholder="Confirm your password")
+                        button.submit-btn(type="submit") Send   
+                    form.form(action="/auth/login" method="POST" autocomplete="off")
                         h2 Login
-                        p 
-                        | Email
-                        input(type="email", name="email")
-                        p 
-                        | Password
-                        input(type="password", name="password")
-                        button.submit-btn(type="submit") Enviar
+                        div#login
+                            input(type="email", name="email", placeholder="Email")
+                            input(type="password", name="password", placeholder="Password")
+                        button.submit-btn(type="submit") Send
 block scripts
     script.
         var oldTitle = document.title;

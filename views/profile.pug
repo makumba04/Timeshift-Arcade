@@ -1,4 +1,4 @@
-extends layout-user.pug
+extends layout.pug
 
 block append head 
     - var isProfilePage = true
@@ -18,6 +18,10 @@ block content
             .content-wrapper-border
                 .content-wrapper
                     h3 My games
+                if mygames.length > 0
+                    
+                else 
+                    p There are no games to show here
                 
 
 block scripts

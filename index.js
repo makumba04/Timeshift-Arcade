@@ -9,6 +9,7 @@ const bcrypt = require('bcrypt');
 const favicon = require('serve-favicon');
 const { promisify } = require('util');
 const session = require('express-session');
+const { isSymbolObject } = require('util/types');
 
 app.use(express.static(__dirname + '/public'));
 app.use(favicon(__dirname + '/public/images/favicon.ico'));

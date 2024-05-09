@@ -55,7 +55,7 @@ function showAllCategories(categories) {
         
         var tr_body = document.createElement('tr');
 
-        tr_body.innerHTML = `<td>${category.category_id}</td><td>${category.category_name}</td><td>${category.category_description}</td><td><button onclick="editCategory()">Edit</button><button onclick="deleteCategory()">Delete</button></td>`;
+        tr_body.innerHTML = `<td>${category.category_id}</td><td>${category.category_name}</td><td>${category.category_description}</td><td class="admin-panel-actions"><button onclick="editCategory()">Edit</button><button onclick="deleteCategory()">Delete</button></td>`;
         tbody.appendChild(tr_body);
     })
 
@@ -90,7 +90,7 @@ function showAllGames(games) {
         
         var tr_body = document.createElement('tr');
 
-        tr_body.innerHTML = `<td>${game.game_id}</td><td>${game.category_type}</td><td>${game.game_name}</td><td><button onclick="editCategory()">Edit</button><button onclick="deleteCategory()">Delete</button></td>`;
+        tr_body.innerHTML = `<td>${game.game_id}</td><td>${game.category_type}</td><td>${game.game_name}</td><td class="admin-panel-actions"><button onclick="editCategory()">Edit</button><button onclick="deleteCategory()">Delete</button></td>`;
         tbody.appendChild(tr_body);
     })
 
@@ -99,7 +99,36 @@ function showAllGames(games) {
 }
 
 function showAllUsers(users) {
-    let content_table = document.getElementById('content_table');
 
-    //Add here all the code to generate the tables with the fetched data
+    const headers = [
+        "ID", "Name", "Role Level", "Actions"
+    ]
+
+    var container = document.getElementById('content-table');
+    container.innerHTML = '';
+    
+    var table = document.createElement('table');
+    var thead = document.createElement('thead');
+    var tr_thead = document.createElement('tr');
+    var tbody = document.createElement('tbody');
+
+    headers.forEach(header => {
+        var th = document.createElement('th');
+        th.textContent = header;
+        tr_thead.appendChild(th);
+    });
+
+    thead.appendChild(tr_thead);
+    table.appendChild(thead);
+
+    users.forEach(user => {
+        
+        var tr_body = document.createElement('tr');
+
+        tr_body.innerHTML = `<td>${user.user_id}</td><td>${user.username}</td><td>${user.user_role}</td><td class="admin-panel-actions"><button onclick="editCategory()">Edit</button><button onclick="deleteCategory()">Delete</button></td>`;
+        tbody.appendChild(tr_body);
+    })
+
+    table.appendChild(tbody);
+    container.appendChild(table);
 }
