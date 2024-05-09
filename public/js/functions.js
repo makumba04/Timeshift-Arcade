@@ -90,7 +90,7 @@ function showAllGames(games) {
         
         var tr_body = document.createElement('tr');
 
-        tr_body.innerHTML = `<td>${game.game_id}</td><td>${game.category_type}</td><td>${game.game_name}</td><td class="admin-panel-actions"><button onclick="editCategory()">Edit</button><button onclick="deleteCategory()">Delete</button></td>`;
+        tr_body.innerHTML = `<td>${game.game_id}</td><td>${game.category_name}</td><td>${game.game_name}</td><td class="admin-panel-actions"><button onclick="editCategory()">Edit</button><button onclick="deleteCategory()">Delete</button></td>`;
         tbody.appendChild(tr_body);
     })
 

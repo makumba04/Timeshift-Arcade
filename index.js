@@ -78,22 +78,22 @@ app.get('/admin-panel', requireAdmin, function(req, res){
 
 app.get('/admin_panel_categories', (req, res) => {
     db.query('SELECT * FROM category', (err, results) =>{
-      if(err) throw err;
-      res.json(results)
+        if(err) throw err;
+        res.json(results)
     });
 });
 
 app.get('/admin_panel_games', (req, res) => {
-    db.query('SELECT * FROM game', (err, results) =>{
-      if(err) throw err;
-      res.json(results)
+    db.query('SELECT game.*, category.* FROM game INNER JOIN category ON game.category_type = category.category_id', (err, results) =>{
+        if(err) throw err;
+        res.json(results)
     });
 });
 
 app.get('/admin_panel_users', (req, res) => {
     db.query('SELECT * FROM users', (err, results) =>{
-      if(err) throw err;
-      res.json(results)
+        if(err) throw err;
+        res.json(results)
     });
 });
 
