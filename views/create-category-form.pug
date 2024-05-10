@@ -1,0 +1,28 @@
+extends layout-admin.pug 
+
+block content
+    main
+        article
+            .content-wrapper-border
+                .content-wrapper(style="display: flex; justify-content: center; align-items: center;")
+                    form.form(action="/admin_panel_category/create_action" method="POST")    
+                        h2 Add category
+                        div#register
+                            input(type="text", name="category_cover", placeholder="Category's cover localpath")
+                            input(type="text", name="category_name", placeholder="Category's name")
+                            input(type="text", name="category_description", placeholder="Category's description")
+                        div#create-btn-container
+                            button.create-btn(type="submit") Create
+                            a(href="/admin-panel")
+                                button(type="button") Cancel
+    br
+    br
+    br
+    br
+    br
+    br
+    br
+block scripts
+    script.
+        var newTitle = 'Add game';
+        document.title = newTitle;

@@ -1,0 +1,35 @@
+extends layout-admin.pug 
+
+block content
+    main
+        article
+            .content-wrapper-border
+                .content-wrapper(style="display: flex; justify-content: center; align-items: center;")
+                    form#bigger-form.form(action="/admin_panel_games/create_action" method="POST")    
+                        h2 Add game
+                        div#register
+                            input(type="number", name="category_type", placeholder="Category type")
+                            input(type="text", name="game_cover", placeholder="Game's cover localpath")
+                            input(type="text", name="game_name", placeholder="Game's name")
+                            input(type="text", name="game_description", placeholder="Game's synopsis")
+                            input(type="text", name="localpath", placeholder="Game's files localpath")
+                            input(type="text", name="htp", placeholder="How to play?")
+                            select(name='featured')
+                                option(value="default" selected disabled hidden) Featured 
+                                option(value='true') Yes
+                                option(value='false') No
+                        div#create-btn-container
+                            button.create-btn(type="submit") Create
+                            a(href="/admin-panel")
+                                button(type="button") Cancel
+    br
+    br
+    br
+    br
+    br
+    br
+    br
+block scripts
+    script.
+        var newTitle = 'Add game';
+        document.title = newTitle;

@@ -14,7 +14,7 @@
 
 #admin-panel-main {
     width: 100vw;
-    margin-top: 9.5em;
+    margin: 9.5em 0 5em 0;
     box-sizing: border-box;
 }
 
@@ -39,7 +39,6 @@
     justify-content: center;
     align-items: center;
     box-sizing: border-box;
-    border: 1px solid red;
 }
 
 #admin-panel-sidemenu .content-wrapper-border {
@@ -95,4 +94,77 @@
     width: 100%;
     height: 5em;
     box-sizing: border-box;
+    position: fixed;
+    bottom: 0;
+}
+
+#delete {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    padding: 15px 0 0 0;
+}
+
+#create-btn-container {
+    width: 15em;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2em;
+}
+
+.create-btn {
+    background-color: limegreen;
+    color: white;
+    border-color: rgb(30, 185, 30);
+}
+
+.create-btn:hover {
+    background-color: rgb(30, 185, 30);
+    color: rgb(200, 200, 200);
+    border-color: rgb(200, 200, 200);
+}
+
+.create-btn:active {
+    background-color: limegreen;
+    color: white;
+    border-color: white;
+}
+
+#delete-btn {
+    background-color: red;
+    color: white;
+    border-color: rgb(180, 0, 0);
+}
+
+#delete-btn:hover {
+    background-color: rgb(180, 0, 0);
+    color: rgb(200, 200, 200);
+    border-color: rgb(200, 200, 200);
+}
+
+#delete-btn:active {
+    background-color: red;
+    color: white;
+    border-color: white;
+}
+
+#edit-btn {
+    background-color: rgb(35, 98, 159);
+    color: white;
+    border-color: rgb(15, 78, 139);
+}
+
+#edit-btn:hover {
+    background-color: rgb(15, 78, 139);
+    color: rgb(200, 200, 200);
+    border-color: rgb(200, 200, 200);
+}
+
+#edit-btn:active {
+    background-color: rgb(35, 98, 159);
+    color: white;
+    border-color: white;
 }

@@ -63,22 +63,20 @@ input:focus::placeholder{
 }
 
 .submit-btn {
-  border: 1px solid white;
-  color: white;
   padding: 10px 25px 10px 25px;
   margin: 25px 0 25px 0;
-  background-color: rgba(0, 0, 0, 0);
-  font-family: monospace;
-  font-size: 1em;
 }
 
-.submit-btn:hover {
-  border-color: rgb(200, 200, 200);
-  color: rgb(200, 200, 200);
-  cursor: pointer;
-}
-
-.submit-btn:active {
-  border-color: white;
+select {
+  margin: 10px 0 10px 0;
+  padding: 5px;
   color: white;
+  background-color: rgba(0, 0, 0, 0.5);
+  border: none;
+  border-bottom: 2px solid white;
+  font-family: monospace;
+}
+
+#bigger-form {
+  height: 450px;
 }

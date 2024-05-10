@@ -1,0 +1,42 @@
+extends layout-admin.pug 
+
+block content
+    main
+        article
+            h2 Are you sure you want to delete #{game_data.game_name}?
+            .content-wrapper-border
+                .content-wrapper#delete
+                    form(action=`/admin_panel_games/delete/${game_data.game_id}` method="POST") 
+                        button#delete-btn(type="submit") Delete
+                    a(href="/admin-panel")
+                        button#cancel-btn(type="button") Cancel
+    br
+    br
+    br
+    br
+    br
+    br
+    br
+    br
+    br
+    br
+    br
+    br
+    br
+    br
+    br
+    br
+    br
+    br
+    br
+    br
+    br
+    br
+    br
+    br
+    br
+    br
+block scripts
+    script.
+        var newTitle = 'Confirm delete?';
+        document.title = newTitle;

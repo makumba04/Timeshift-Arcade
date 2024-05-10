@@ -12,17 +12,21 @@ block content
                         img(src="/images/games-cover/pokemonred.jpg", class="profile-pic")
                         .profile-data
                             h3 #{user_data.username}
-                            p Lorem ipsum dolor sit amet consectetur adipisicing elit. Sequi id officiis et porro nisi qui, corrupti temporibus illum repellat odit sed nobis. Earum, ea! Impedit perferendis distinctio nemo fugit natus.
-                            a(href="/auth/logout" method="GET")
-                                button Log out
+                            if !user_data.user_bio
+                                p Nothing to display here...
+                            else
+                                p #{user_data.user_bio}
+                            .profile-buttons
+                                a(href="")
+                                    button Edit profile pic
+                                a(href="")
+                                    button Add / Edit bio 
+                                a(href="/auth/logout" method="GET")
+                                    button Log out
             .content-wrapper-border
                 .content-wrapper
                     h3 My games
-                if mygames.length > 0
-                    
-                else 
-                    p There are no games to show here
-                
+                    #profile-linked-games
 
 block scripts
     script.
@@ -30,3 +34,7 @@ block scripts
         var oldTitle = document.title;
         var newTitle = oldTitle + ' - ' + username;
         document.title = newTitle;
+
+        document.addEventListener('DOMContentLoaded', function() {
+            searchUserGames();
+        })

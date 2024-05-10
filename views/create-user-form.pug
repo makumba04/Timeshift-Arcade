@@ -1,0 +1,29 @@
+extends layout-admin.pug 
+
+block content
+    main
+        article
+            .content-wrapper-border
+                .content-wrapper(style="display: flex; justify-content: center; align-items: center;")
+                    form.form(action="/admin_panel_users/create_action" method="POST" autocomplete="off" style="margin: 20px 0 20px 0;")    
+                        h2 Create user
+                        div#register
+                            input(type="text", name="username", placeholder="Username")
+                            input(type="email", name="email", placeholder="Email")
+                            input(type="password", name="password", placeholder="Password")
+                            input(type="password", name="confirmPassword", placeholder="Confirm your password")
+                        div#create-btn-container
+                            button.create-btn(type="submit") Create
+                            a(href="/admin-panel")
+                                button(type="button") Cancel
+    br
+    br
+    br
+    br
+    br
+    br
+    br
+block scripts
+    script.
+        var newTitle = 'Create user';
+        document.title = newTitle;
