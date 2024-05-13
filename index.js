@@ -447,6 +447,36 @@ app.get('/my_profile/:userId', function(req, res){
     })
 });
 
+app.get('/add_edit_bio/:userId', function(req, res){
+    const {userId} = req.params;
+    db.query('SELECT * FROM users WHERE user_id = ?', [userId], (err, results) => {
+        if(err) throw err;
+        res.render('users/add_edit_bio', {
+            title: 'user_data',
+            user_data: results[0]
+        });
+    })
+})
+
+app.post('/add_edit_bio/action/:userId', async (req, res) => {
+    try {
+        // Get the request body
+        const { userId } = req.params;
+        const { user_bio } = req.body;
+        const queryParams = [user_bio, userId];
+
+        var updateQuery = `UPDATE users SET user_bio = ? WHERE user_id = ?`;
+        
+        const queryResult = await query(updateQuery, queryParams);
+        
+        res.redirect(`/my_profile/${userId}`);
+    } catch (error) {
+        // Handle errors
+        console.error("Error updating user:", error);
+        res.status(500).send("An error occurred while updating the user");
+    }
+})
+
 app.get('/user_linked_games/:userid', function(req, res){
     const {userId} = req.params;
     db.query('SELECT game.* FROM game INNER JOIN saves ON game.game_id = saves.game_id INNER JOIN users ON users.user_id = saves.user_id WHERE users.user_id = ?', [userId], (err, results) => {

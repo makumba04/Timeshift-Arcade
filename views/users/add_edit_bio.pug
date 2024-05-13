@@ -1,0 +1,21 @@
+extends ../layouts/layout.pug
+
+block content 
+    main
+        article
+            .content-wrapper-border
+                .content-wrapper(style="display: flex; justify-content: center; align-items: center;")
+                    form.form(action=`/add_edit_bio/action/${user_data.user_id}` method="POST" autocomplete="off" style="margin: 20px 0 20px 0;")    
+                        h2 Add / Edit bio
+                        div#register
+                            textarea(name="user_bio" value=`${user_data.user_bio}`)
+                        
+                        div#create-btn-container
+                            button#edit-btn(type="submit") Edit
+                            a(href=`/my_profile/${user_data.user_id}`)
+                                button(type="button") Cancel
+block scripts
+    script.
+        var username = '#{user_data.username}';
+        var newTitle = 'Edit ' + username;
+        document.title = newTitle;
