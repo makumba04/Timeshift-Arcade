@@ -1,0 +1,37 @@
+extends ../layouts/layout-admin.pug
+
+block content 
+    main
+        article
+            .content-wrapper-border
+                .content-wrapper(style="display: flex; justify-content: center; align-items: center;")
+                    form.form(action=`/admin_panel_games/edit_action/${game_data.game_id}` method="POST" autocomplete="off" style="margin: 20px 0 20px 0;")    
+                        h2 Edit game
+                        div#register
+                            input(type="number", name="category_type", placeholder="Category type", value=`${game_data.game_id}`)
+                            input(type="text", name="game_cover", placeholder="Game's cover localpath", value=`${game_data.game_cover}`)
+                            input(type="text", name="game_name", placeholder="Game's name", value=`${game_data.game_name}`)
+                            textarea(name="game_description", placeholder="Game's description")
+                            input(type="text", name="localpath", placeholder="Game's files localpath", value=`${game_data.localpath}`)
+                            textarea(name="htp", placeholder='How to play?')
+                            select(name='featured')
+                                option(value=`${game_data.featured}` selected hidden) Featured 
+                                option(value=1) Yes
+                                option(value=0) No
+
+                        div#create-btn-container
+                            button#edit-btn(type="submit") Edit
+                            a(href="/admin-panel")
+                                button(type="button") Cancel
+    br
+    br
+    br
+    br
+    br
+    br
+    br
+block scripts
+    script.
+        var gamename = '#{game_data.game_name}';
+        var newTitle = 'Edit ' + gamename;
+        document.title = newTitle;

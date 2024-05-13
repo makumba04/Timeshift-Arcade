@@ -1,4 +1,4 @@
-extends layout-admin.pug 
+extends ../layouts/layout-admin.pug 
 
 block content
     main
@@ -7,7 +7,7 @@ block content
             .content-wrapper-border
                 .content-wrapper#delete
                     form(action=`/admin_panel_users/delete/${user_data.user_id}` method="POST") 
-                        button.delete-btn(type="submit") Delete
+                        button#delete-btn(type="submit") Delete
                     a(href="/admin-panel")
                         button#cancel-btn(type="button") Cancel
     br

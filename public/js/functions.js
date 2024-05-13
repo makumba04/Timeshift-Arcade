@@ -65,7 +65,7 @@ function showAllCategories(categories) {
         
         var tr_body = document.createElement('tr');
 
-        tr_body.innerHTML = `<td>${category.category_id}</td><td>${category.category_name}</td><td>${category.category_description}</td><td class="admin-panel-actions"><button id="edit-btn">Edit</button><a href='/admin_panel_category/delete/confirm/${category.category_id}'><button id="delete-btn">Delete</button></a></td>`;
+        tr_body.innerHTML = `<td>${category.category_id}</td><td>${category.category_name}</td><td>${category.category_description}</td><td class="admin-panel-actions"><a href='/admin_panel_categories/edit/${category.category_id}'><button id="edit-btn">Edit</button></a><a href='/admin_panel_category/delete/confirm/${category.category_id}'><button id="delete-btn">Delete</button></a></td>`;
         tbody.appendChild(tr_body);
     })
 
@@ -108,7 +108,7 @@ function showAllGames(games) {
         
         var tr_body = document.createElement('tr');
 
-        tr_body.innerHTML = `<td>${game.game_id}</td><td>${game.category_name}</td><td>${game.game_name}</td><td class="admin-panel-actions"><button id="edit-btn">Edit</button><a href='/admin_panel_games/delete/confirm/${game.game_id}'><button id="delete-btn">Delete</button></a></td>`;
+        tr_body.innerHTML = `<td>${game.game_id}</td><td>${game.category_name}</td><td>${game.game_name}</td><td class="admin-panel-actions"><a href='/admin_panel_games/edit/${game.game_id}'><button id="edit-btn">Edit</button></a><a href='/admin_panel_games/delete/confirm/${game.game_id}'><button id="delete-btn">Delete</button></a></td>`;
         tbody.appendChild(tr_body);
     })
 

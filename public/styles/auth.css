@@ -53,6 +53,18 @@ input:focus::placeholder{
   color: transparent;
 }
 
+textarea {
+  padding: 5px;
+  color: white;
+  background-color: rgba(0, 0, 0, 0.5);
+  border: none;
+  border-bottom: 2px solid white;
+}
+
+textarea::placeholder {
+  color: white;
+}
+
 .form > * {
   z-index: 4;
 }

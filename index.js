@@ -75,7 +75,7 @@ app.get('/', function(req, res){
     }
 
     app.get('/admin-panel', requireAdmin, function(req, res){
-        res.render('admin-panel')
+        res.render('admin-panel/admin-panel')
     });
 
     app.get('/admin_panel_categories', (req, res) => {
@@ -99,49 +99,11 @@ app.get('/', function(req, res){
         });
     });
     
-    // -- CREATE GAME
-
-        app.get("/admin_panel_games/create", async (req, res) => {
-            try {
-                res.render("create-game-form");
-            } catch (error) {
-                console.error("Error displaying confirmation page:", error);
-                res.status(500).send("An error occurred while displaying confirmation page");
-            }
-        });
-
-        app.post("/admin_panel_users/create_action", async (req, res) => {
-            try {
-                // Get the request body
-                const { username, email, password } = req.body;
-
-                // Validate input
-                if (!username || !email || !password) {
-                    return res.status(400).send("Missing required fields");
-                }
-
-                // Hash the password
-                const hashedPassword = await bcrypt.hash(password, 10);
-
-                // Insert the user into the database
-                const queryResult = await query(
-                    `INSERT INTO users (username, email, passwd, user_role) VALUES (?, ?, ?, 1)`,
-                    [username, email, hashedPassword]
-                );
-
-                res.redirect('/admin-panel');
-            } catch (error) {
-                // Handle errors
-                console.error("Error registering user:", error);
-                res.status(500).send("An error occurred while registering the user");
-            }
-        })
-
     // -- CREATE CATEGORY
 
-        app.get("/admin_panel_category/create", async (req, res) => {
+        app.get("/admin_panel_category/create", requireAdmin, async (req, res) => {
             try {
-                res.render("create-category-form");
+                res.render("categories/create-category-form");
             } catch (error) {
                 console.error("Error displaying form page:", error);
                 res.status(500).send("An error occurred while displaying form page");
@@ -171,14 +133,45 @@ app.get('/', function(req, res){
                 res.status(500).send("An error occurred while registering the category");
             }
         })
+
+    // -- EDIT CATEGORY
+        app.get("/admin_panel_categories/edit/:categoryId", requireAdmin, async (req, res) => {
+            try {
+                const { categoryId } = req.params;
+                const categoryData = await query("SELECT * FROM category WHERE category_id = ?", [categoryId]);
+
+                res.render("categories/edit-category", { category_data: categoryData[0]});
+            } catch (error) {
+                console.error("Error displaying form page:", error);
+                res.status(500).send("An error occurred while displaying form page");
+            }
+        });
+
+        app.post("/admin_panel_categories/edit_action/:categoryId", async (req, res) => {
+            try {
+                const { categoryId } = req.params;
+                const { category_cover, category_name, category_description } = req.body;
+                const queryParams = [category_cover, category_name, category_description, categoryId];
+                
+                var updateQuery = 'UPDATE category SET category_cover = ?, category_name = ?, category_description = ? WHERE category_id = ?';
+                
+                const queryResult = await query(updateQuery, queryParams);
+        
+                res.redirect('/admin-panel');
+            } catch (error) {
+                // Handle errors
+                console.error("Error updating user:", error);
+                res.status(500).send("An error occurred while updating the user");
+            }
+        })
     
     // -- DELETE CATEGORY
-        app.get("/admin_panel_category/delete/confirm/:categoryId", async (req, res) => {
+        app.get("/admin_panel_category/delete/confirm/:categoryId", requireAdmin, async (req, res) => {
             try {
                 const { categoryId } = req.params;
                 const categoryData = await query("SELECT * FROM category WHERE category_id = ?", [categoryId]);
         
-                res.render("delete-category-confirm", { category_data: categoryData[0] });
+                res.render("categories/delete-category-confirm", { category_data: categoryData[0] });
             } catch (error) {
                 console.error("Error displaying confirmation page:", error);
                 res.status(500).send("An error occurred while displaying confirmation page");
@@ -201,47 +194,107 @@ app.get('/', function(req, res){
         });
 
     // -- CREATE GAME
-
-    app.get("/admin_panel_games/create", async (req, res) => {
-        try {
-            res.render("create-game-form");
-        } catch (error) {
-            console.error("Error displaying form page:", error);
-            res.status(500).send("An error occurred while displaying form page");
-        }
-    });
-
-    app.post("/admin_panel_games/create_action", async (req, res) => {
-        try {
-            // Get the request body
-            const { category_type, game_cover, game_name, game_description, localpath, htp, featured } = req.body;
-
-            // Validate input
-            if (!category_type || !game_cover || !game_name || !game_description || !localpath || !htp || !featured) {
-                return res.status(400).send("Missing required fields");
+        app.get("/admin_panel_games/create", requireAdmin, async (req, res) => {
+            try {
+                res.render("games/create-game-form");
+            } catch (error) {
+                console.error("Error displaying form page:", error);
+                res.status(500).send("An error occurred while displaying form page");
             }
+        });
 
-            // Insert the user into the database
-            const queryResult = await query(
-                `INSERT INTO game (category_type, game_cover, game_name, game_description, localpath, htp, featured ) VALUES (?, ?, ?, ?, ?, ?, ?)`,
-                [category_type, game_cover, game_name, game_description, localpath, htp, featured]
-            );
+        app.post("/admin_panel_games/create_action", async (req, res) => {
+            try {
+                // Get the request body
+                const { category_type, game_cover, game_name, game_description, localpath, htp, featured } = req.body;
 
-            res.redirect('/admin-panel');
-        } catch (error) {
-            // Handle errors
-            console.error("Error registering game:", error);
-            res.status(500).send("An error occurred while registering the game");
-        }
-    })
+                // Validate input
+                if (!category_type || !game_cover || !game_name || !game_description || !localpath || !htp || !featured) {
+                    return res.status(400).send("Missing required fields");
+                }
+
+                // Insert the user into the database
+                const queryResult = await query(
+                    `INSERT INTO game (category_type, game_cover, game_name, game_description, localpath, htp, featured ) VALUES (?, ?, ?, ?, ?, ?, ?)`,
+                    [category_type, game_cover, game_name, game_description, localpath, htp, featured]
+                );
+
+                res.redirect('/admin-panel');
+            } catch (error) {
+                // Handle errors
+                console.error("Error registering game:", error);
+                res.status(500).send("An error occurred while registering the game");
+            }
+        })
     
+    // -- EDIT GAME
+        app.get("/admin_panel_games/edit/:gameId", requireAdmin, async (req, res) => {
+            try {
+                const { gameId } = req.params;
+                const gameData = await query("SELECT * FROM game WHERE game_id = ?", [gameId]);
+
+                res.render("games/edit-game", { game_data: gameData[0]});
+            } catch (error) {
+                console.error("Error displaying form page:", error);
+                res.status(500).send("An error occurred while displaying form page");
+            }
+        });
+
+        app.post("/admin_panel_games/edit_action/:gameId", async (req, res) => {
+            try {
+                const { gameId } = req.params;
+                const { category_type, game_cover, game_name, game_description, localpath, htp, featured } = req.body;
+                const queryParams = [];
+                
+                var updateQuery = 'UPDATE game SET';
+
+                if (category_type !== undefined) {
+                    updateQuery += ` category_type = ?, `;
+                    queryParams.push(category_type);
+                }
+                updateQuery += ` game_cover = ?, game_name = ?`;
+                
+                queryParams.push(game_cover);
+                queryParams.push(game_name);
+                
+                if (game_description !== '') {
+                    updateQuery += `, game_description = ?`;
+                    queryParams.push(game_description);
+                }
+
+                updateQuery += `, localpath = ?`;
+                queryParams.push(localpath);
+
+                if (htp !== '') {
+                    updateQuery += `, htp = ?`;
+                    queryParams.push(htp);
+                }
+
+                if (featured !== undefined) {
+                    updateQuery += `, featured = ?`;
+                    queryParams.push(featured);
+                }
+
+                updateQuery += ` WHERE game_id = ?`;
+                queryParams.push(gameId);
+                
+                const queryResult = await query(updateQuery, queryParams);
+        
+                res.redirect('/admin-panel');
+            } catch (error) {
+                // Handle errors
+                console.error("Error updating user:", error);
+                res.status(500).send("An error occurred while updating the user");
+            }
+        })
+
     // -- DELETE GAME
-        app.get("/admin_panel_games/delete/confirm/:gameId", async (req, res) => {
+        app.get("/admin_panel_games/delete/confirm/:gameId", requireAdmin, async (req, res) => {
             try {
                 const { gameId } = req.params;
                 const gameData = await query("SELECT * FROM game WHERE game_id = ?", [gameId]);
         
-                res.render("delete-game-confirm", { game_data: gameData[0] });
+                res.render("games/delete-game-confirm", { game_data: gameData[0] });
             } catch (error) {
                 console.error("Error displaying confirmation page:", error);
                 res.status(500).send("An error occurred while displaying confirmation page");
@@ -265,9 +318,9 @@ app.get('/', function(req, res){
 
     // -- CREATE USER
 
-        app.get("/admin_panel_users/create", async (req, res) => {
+        app.get("/admin_panel_users/create", requireAdmin, async (req, res) => {
             try {
-                res.render("create-user-form");
+                res.render("users/create-user-form");
             } catch (error) {
                 console.error("Error displaying form page:", error);
                 res.status(500).send("An error occurred while displaying form page");
@@ -301,13 +354,65 @@ app.get('/', function(req, res){
             }
         })
 
+    // -- EDIT USER
+        app.get("/admin_panel_users/edit/:userId", requireAdmin, async (req, res) => {
+            try {
+                const { userId } = req.params;
+                const userData = await query("SELECT * FROM users WHERE user_id = ?", [userId]);
+
+                res.render("users/edit-user", { user_data: userData[0]});
+            } catch (error) {
+                console.error("Error displaying confirmation page:", error);
+                res.status(500).send("An error occurred while displaying confirmation page");
+            }
+        });
+
+        app.post("/admin_panel_users/edit_action/:userId", async (req, res) => {
+            try {
+                // Get the request body
+                const { userId } = req.params;
+                const { username, email, password, user_role } = req.body;
+        
+                // Hash the password
+                const hashedPassword = await bcrypt.hash(password, 10);
+        
+                // Construct the parameter array for the query
+                const queryParams = [username, email, hashedPassword];
+        
+                // Construct the SET clause for the update query
+                let updateQuery = `UPDATE users SET username = ?, email = ?, passwd = ?`;
+        
+                // If user_role is provided, include it in the query and parameters
+                if (user_role !== undefined) {
+                    updateQuery += `, user_role = ?`;
+                    queryParams.push(user_role);
+                }
+        
+                // Add the userId parameter to the end of the array
+                queryParams.push(userId);
+        
+                // Add the WHERE clause to the update query
+                updateQuery += ` WHERE user_id = ?`;
+        
+                // Execute the update query
+                const queryResult = await query(updateQuery, queryParams);
+        
+                res.redirect('/admin-panel');
+            } catch (error) {
+                // Handle errors
+                console.error("Error updating user:", error);
+                res.status(500).send("An error occurred while updating the user");
+            }
+        })
+        
+
     // -- DELETE USER
-        app.get("/admin_panel_users/delete/confirm/:userId", async (req, res) => {
+        app.get("/admin_panel_users/delete/confirm/:userId", requireAdmin, async (req, res) => {
             try {
                 const { userId } = req.params;
                 const userData = await query("SELECT * FROM users WHERE user_id = ?", [userId]);
         
-                res.render("delete-user-confirm", { user_data: userData[0] });
+                res.render("users/delete-user-confirm", { user_data: userData[0] });
             } catch (error) {
                 console.error("Error displaying confirmation page:", error);
                 res.status(500).send("An error occurred while displaying confirmation page");
@@ -335,7 +440,7 @@ app.get('/my_profile/:userId', function(req, res){
     const {userId} = req.params;
     db.query('SELECT * FROM users WHERE user_id = ?', [userId], (err, results) => {
         if(err) throw err;
-        res.render('profile', {
+        res.render('users/profile', {
             title: 'user_data',
             user_data: results[0]
         });
@@ -353,7 +458,7 @@ app.get('/user_linked_games/:userid', function(req, res){
 app.get('/categories', function(req, res){
     db.query('SELECT * FROM category', (err, results) => {
         if (err) throw err;
-        res.render('categories', {
+        res.render('categories/categories', {
             title: 'categories',
             categories: results,
             isLoggedIn: req.session.isLoggedIn,
@@ -366,7 +471,7 @@ app.get('/games/:id', function(req, res){
     const {id} = req.params;
     db.query('SELECT * FROM game WHERE game_id = ?', [id], (err, results) => {
         if (err) throw err;
-        res.render('game', {
+        res.render('games/game', {
             title: 'game',
             game: results[0],
             isLoggedIn: req.session.isLoggedIn,
@@ -379,7 +484,7 @@ app.get('/games_category/:id', function(req, res){
     const {id} = req.params;
     db.query('SELECT * FROM game INNER JOIN category ON category.category_id = game.category_type WHERE game.category_type = ?', [id], (err, results) => {
         if (err) throw err;
-        res.render('games-by-category', {
+        res.render('games/games-by-category', {
             title: 'games',
             games: results,
             isLoggedIn: req.session.isLoggedIn,

@@ -1,0 +1,29 @@
+extends ../layouts/layout-admin.pug
+
+block content 
+    main
+        article
+            .content-wrapper-border
+                .content-wrapper(style="display: flex; justify-content: center; align-items: center;")
+                    form.form(action=`/admin_panel_categories/edit_action/${category_data.category_id}` method="POST" autocomplete="off" style="margin: 20px 0 20px 0;")    
+                        h2 Edit category
+                        div#register
+                            input(type="text", name="category_cover", placeholder="Category cover", value=`${category_data.category_cover}`)
+                            input(type="text", name="category_name", placeholder="Category name", value=`${category_data.category_name}`)
+                            input(type="text", name="category_description", placeholder="Category description", value=`${category_data.category_description}`)
+                        div#create-btn-container
+                            button#edit-btn(type="submit") Edit
+                            a(href="/admin-panel")
+                                button(type="button") Cancel
+    br
+    br
+    br
+    br
+    br
+    br
+    br
+block scripts
+    script.
+        var categoryname = '#{category_data.category_name}';
+        var newTitle = 'Edit ' + categoryname;
+        document.title = newTitle;
