@@ -3,15 +3,19 @@ const mysql = require('mysql2');
 const { promisify } = require('util');
 require('dotenv').config()
 
+const router = express.Router();
+
+// -- CONEXIÓN A BD
+
 const db = mysql.createPool({
     host: process.env.DATABASE_HOST,
     user: process.env.DATABASE_ROOT,
     password: process.env.DATABASE_PASSWORD,
     database: process.env.DATABASE
 });
-
-const router = express.Router();
 const query = promisify(db.query).bind(db);
+
+// -- RUTAS (PROFILEa)
 
 router.showUserProfile = function (req, res) {
     const {userId} = req.params;
@@ -41,6 +45,39 @@ router.userLinkedGames = function (req, res) {
         if (err) throw err;
         res.json(results);
     })
+}
+
+router.uploadPFP = function (req, res) {
+    const {userId} = req.params;
+    db.query('SELECT * FROM users WHERE user_id = ?', [userId], (err, results) => {
+        if(err) throw err;
+        res.render('profile/uploadPFP', {
+            title: 'user_data',
+            user_data: results[0]
+        })
+    })
+}
+
+router.uploadPFP_action = function (req, res) {
+
+    const { userId } = req.params;
+    const pfp_image = req.files.pfp_image;
+
+    // If no image submitted, return error
+    if (!pfp_image) {
+        return res.status(400).send('No image uploaded.');
+    }
+
+    // Move the uploaded image to our upload folder
+    pfp_image.mv(__dirname + './../public/images/pfp/' + pfp_image.name, function(err) {
+        if (err) {
+            console.error(err);
+            return res.status(500).send(err);
+        }
+        // File uploaded successfully
+        // res.sendStatus(200);
+        res.redirect(`/my_profile/${userId}`)
+    });
 }
 
 router.addEditUserBio_action = async (req, res) => {

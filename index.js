@@ -5,6 +5,7 @@ const express = require('express');
 const mysql = require('mysql2');
 const bcrypt = require('bcrypt');
 const favicon = require('serve-favicon');
+const fileUpload = require('express-fileupload');
 const { promisify } = require('util');
 const session = require('express-session');
 require('dotenv').config()
@@ -15,11 +16,13 @@ const profileRoutes = require('./routes/profile_routes');
 const categoryRoutes = require('./routes/category_routes');
 const gameRoutes = require('./routes/game_routes');
 const authRoutes = require('./routes/auth_routes');
+const { profile } = require('console');
 
 app.use('/my_profile', profileRoutes);
 app.use('/category', categoryRoutes);
 app.use('/games', gameRoutes);
 app.use('/auth', authRoutes);
+app.use(fileUpload());
 
 app.use(express.static(__dirname + '/public'));
 app.use(favicon(__dirname + '/public/images/favicon.ico'));
@@ -37,6 +40,26 @@ app.listen(3000, ()=> {
     console.log('Server up and running')
 });
 
+// -- MULTER
+
+// var storage = multer.diskStorage({  // DISK STORAGE
+//     destination: function (req, file, callback) {
+//         callback(null, './public/images/pfp');
+//     },
+//     filename: function (req, file, callback) {
+//         var fileExtensionPatter = /\.([0-9a-z]+)(?=[?#])|(\.)(?:[\w]+)$/;
+//         var extension = file.originalname.match(fileExtensionPatter)[0];
+//         if(extension === '.png'){
+//             callback(null, file.fieldname + '-' + Date.now() + '.png');
+//         } else if (extension === '.jpg'){
+//             callback(null, file.fieldname + '-' + Date.now() + '.jpg');
+//         } else if (extension === '.jpeg'){
+//             callback(null, file.filename + '-' + Date.now() + '.jpeg');
+//         }
+//     }
+// });
+// var upload = multer({ storage : storage}).single('pfp_image');
+
 // -- CONEXION A BD
 
 const db = mysql.createPool({
@@ -47,7 +70,8 @@ const db = mysql.createPool({
 });
 
 const query = promisify(db.query).bind(db);
-// ### RUTAS ###
+
+// -- RUTAS
 
 app.get('/', function(req, res){
 
@@ -438,7 +462,9 @@ app.get('/', function(req, res){
 
 app.get('/my_profile/:userId', profileRoutes.showUserProfile);
 app.get('/add_edit_bio/:userId', profileRoutes.addEditUserBio);
-app.get('/user_linked_games/:userid', profileRoutes.userLinkedGames)
+app.get('/user_linked_games/:userid', profileRoutes.userLinkedGames);
+app.get('/uploadPFP/:userId', profileRoutes.uploadPFP);
+app.post('/uploadPFP/action/:userId', profileRoutes.uploadPFP_action);
 app.post('/add_edit_bio/action/:userId', profileRoutes.addEditUserBio_action);
 
 // -- CATEGORY ROUTES

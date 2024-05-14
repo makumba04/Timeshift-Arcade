@@ -17,7 +17,7 @@ block content
                             else
                                 p #{user_data.user_bio}
                             .profile-buttons
-                                a(href="")
+                                a(href=`/uploadPFP/${user_data.user_id}`)
                                     button Edit profile pic
                                 a(href=`/add_edit_bio/${user_data.user_id}`)
                                     button Add / Edit bio 

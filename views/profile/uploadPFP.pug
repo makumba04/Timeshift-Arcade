@@ -1,0 +1,22 @@
+extends ../layouts/layout.pug 
+
+block content 
+    main
+        article
+            .content-wrapper-border
+                .content-wrapper(style="display: flex; justify-content: center; align-items: center;")
+                    form.form(action=`/uploadPFP/action/${user_data.user_id}` method="POST" enctype="multipart/form-data" autocomplete="off" style="margin: 20px 0 20px 0;")    
+                        h2 Add / Edit bio
+                        div#register
+                            input(type="file" name="pfp_image" required)
+                        
+                        div#create-btn-container
+                            button#edit-btn(type="submit") Upload
+                            a(href=`/my_profile/${user_data.user_id}`)
+                                button(type="button") Cancel
+
+block scripts
+    script.
+        var oldTitle = document.title;
+        var newTitle = oldTitle + ' - Upload profile picture';
+        document.title = newTitle;
