@@ -366,9 +366,11 @@ footer {
 
 .profile-pic {
     border-radius: 50%;
-    width: 20% !important;
+    width: 200px;
+    height: 200px;
     margin: 10px;
     border: 1px solid black;
+    background-color: black;
     object-fit: contain;
 }
 

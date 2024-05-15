@@ -39,4 +39,15 @@ router.showGamesByCategory = function(req, res) {
     })
 }
 
+// // Move the uploaded image to our upload folder
+// pfp_image.mv(__dirname + './../public/images/pfp/' + pfp_image.name, function(err) {
+//     if (err) {
+//         console.error(err);
+//         return res.status(500).send(err);
+//     }
+//     // File uploaded successfully
+//     // res.sendStatus(200);
+//     res.redirect(`/my_profile/${userId}`)
+// });
+
 module.exports = router;

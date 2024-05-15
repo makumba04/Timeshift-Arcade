@@ -1,12 +1,8 @@
-// ### APP ###
-
-// Definimos las constantes principales
+// -- HANDLERS PRINCIPALES
 const express = require('express');
 const mysql = require('mysql2');
-const bcrypt = require('bcrypt');
 const favicon = require('serve-favicon');
 const fileUpload = require('express-fileupload');
-const { promisify } = require('util');
 const session = require('express-session');
 require('dotenv').config()
 
@@ -16,12 +12,13 @@ const profileRoutes = require('./routes/profile_routes');
 const categoryRoutes = require('./routes/category_routes');
 const gameRoutes = require('./routes/game_routes');
 const authRoutes = require('./routes/auth_routes');
-const { profile } = require('console');
+const adminPanelRoutes = require('./routes/admin_panel_routes');
 
 app.use('/my_profile', profileRoutes);
 app.use('/category', categoryRoutes);
 app.use('/games', gameRoutes);
 app.use('/auth', authRoutes);
+app.use('/admin-panel', adminPanelRoutes);
 app.use(fileUpload());
 
 app.use(express.static(__dirname + '/public'));
@@ -40,26 +37,6 @@ app.listen(3000, ()=> {
     console.log('Server up and running')
 });
 
-// -- MULTER
-
-// var storage = multer.diskStorage({  // DISK STORAGE
-//     destination: function (req, file, callback) {
-//         callback(null, './public/images/pfp');
-//     },
-//     filename: function (req, file, callback) {
-//         var fileExtensionPatter = /\.([0-9a-z]+)(?=[?#])|(\.)(?:[\w]+)$/;
-//         var extension = file.originalname.match(fileExtensionPatter)[0];
-//         if(extension === '.png'){
-//             callback(null, file.fieldname + '-' + Date.now() + '.png');
-//         } else if (extension === '.jpg'){
-//             callback(null, file.fieldname + '-' + Date.now() + '.jpg');
-//         } else if (extension === '.jpeg'){
-//             callback(null, file.filename + '-' + Date.now() + '.jpeg');
-//         }
-//     }
-// });
-// var upload = multer({ storage : storage}).single('pfp_image');
-
 // -- CONEXION A BD
 
 const db = mysql.createPool({
@@ -69,20 +46,13 @@ const db = mysql.createPool({
     database: process.env.DATABASE
 });
 
-const query = promisify(db.query).bind(db);
-
-// -- RUTAS
+// -- HOME
 
 app.get('/', function(req, res){
 
     db.query('SELECT * FROM game WHERE featured IS TRUE', (err, results)=>{
         if(err) throw err;
-        res.render('index', {
-            title: 'featured',
-            featured: results,
-            isLoggedIn: req.session.isLoggedIn,
-            user_id: req.session.userId
-        });
+        res.render('index', { featured: results, isLoggedIn: req.session.isLoggedIn, user_id: req.session.userId });
     })
 });
 
@@ -98,9 +68,7 @@ app.get('/', function(req, res){
         }
     }
 
-    app.get('/admin-panel', requireAdmin, function(req, res){
-        res.render('admin-panel/admin-panel')
-    });
+    app.get('/admin-panel', requireAdmin, adminPanelRoutes.renderAdminPanel);
 
     app.get('/admin_panel_categories', (req, res) => {
         db.query('SELECT * FROM category', (err, results) =>{
@@ -123,346 +91,36 @@ app.get('/', function(req, res){
         });
     });
     
-    // -- CREATE CATEGORY
+    // -- CREATE (ADMIN-PANEL)
+    app.get("/admin_panel_category/create", requireAdmin, adminPanelRoutes.renderCreateCategoryForm); // CATEGORY
+    app.post("/admin_panel_category/create_action", adminPanelRoutes.createCategoryAction); // CATEGORY
+    app.get("/admin_panel_games/create", requireAdmin, adminPanelRoutes.renderCreateGameForm); // GAME
+    app.post("/admin_panel_games/create_action", adminPanelRoutes.createGameAction); // GAME
+    app.get("/admin_panel_users/create", requireAdmin, adminPanelRoutes.renderCreateUserForm); // USER
+    app.post("/admin_panel_users/create_action", adminPanelRoutes.createUserAction); // USER
 
-        app.get("/admin_panel_category/create", requireAdmin, async (req, res) => {
-            try {
-                res.render("categories/create-category-form");
-            } catch (error) {
-                console.error("Error displaying form page:", error);
-                res.status(500).send("An error occurred while displaying form page");
-            }
-        });
+    // -- EDIT (ADMIN-PANEL)
+    app.get("/admin_panel_categories/edit/:categoryId", requireAdmin, adminPanelRoutes.renderEditCategoryForm); // CATEGORY
+    app.post("/admin_panel_categories/edit_action/:categoryId", adminPanelRoutes.editCategoryAction); // CATEGORY
+    app.get("/admin_panel_games/edit/:gameId", requireAdmin, adminPanelRoutes.renderEditGameForm); // GAME
+    app.post("/admin_panel_games/edit_action/:gameId", adminPanelRoutes.editGameAction); // GAME
+    app.get("/admin_panel_users/edit/:userId", requireAdmin, adminPanelRoutes.renderEditUserForm); // USER
+    app.post("/admin_panel_users/edit_action/:userId", adminPanelRoutes.editUserAction); // USER
 
-        app.post("/admin_panel_category/create_action", async (req, res) => {
-            try {
-                // Get the request body
-                const { category_cover, category_name, category_description } = req.body;
-
-                // Validate input
-                if (!category_cover || !category_name || !category_description) {
-                    return res.status(400).send("Missing required fields");
-                }
-
-                // Insert the user into the database
-                const queryResult = await query(
-                    `INSERT INTO category (category_cover, category_name, category_description) VALUES (?, ?, ?)`,
-                    [category_cover, category_name, category_description]
-                );
-
-                res.redirect('/admin-panel');
-            } catch (error) {
-                // Handle errors
-                console.error("Error registering category:", error);
-                res.status(500).send("An error occurred while registering the category");
-            }
-        })
-
-    // -- EDIT CATEGORY
-        app.get("/admin_panel_categories/edit/:categoryId", requireAdmin, async (req, res) => {
-            try {
-                const { categoryId } = req.params;
-                const categoryData = await query("SELECT * FROM category WHERE category_id = ?", [categoryId]);
-
-                res.render("categories/edit-category", { category_data: categoryData[0]});
-            } catch (error) {
-                console.error("Error displaying form page:", error);
-                res.status(500).send("An error occurred while displaying form page");
-            }
-        });
-
-        app.post("/admin_panel_categories/edit_action/:categoryId", async (req, res) => {
-            try {
-                const { categoryId } = req.params;
-                const { category_cover, category_name, category_description } = req.body;
-                const queryParams = [category_cover, category_name, category_description, categoryId];
-                
-                var updateQuery = 'UPDATE category SET category_cover = ?, category_name = ?, category_description = ? WHERE category_id = ?';
-                
-                const queryResult = await query(updateQuery, queryParams);
-        
-                res.redirect('/admin-panel');
-            } catch (error) {
-                // Handle errors
-                console.error("Error updating user:", error);
-                res.status(500).send("An error occurred while updating the user");
-            }
-        })
-    
-    // -- DELETE CATEGORY
-        app.get("/admin_panel_category/delete/confirm/:categoryId", requireAdmin, async (req, res) => {
-            try {
-                const { categoryId } = req.params;
-                const categoryData = await query("SELECT * FROM category WHERE category_id = ?", [categoryId]);
-        
-                res.render("categories/delete-category-confirm", { category_data: categoryData[0] });
-            } catch (error) {
-                console.error("Error displaying confirmation page:", error);
-                res.status(500).send("An error occurred while displaying confirmation page");
-            }
-        });
-
-        app.post("/admin_panel_category/delete/:categoryId", async (req, res) => {
-            try {
-                const { categoryId } = req.params;
-
-                await query("DELETE FROM category WHERE category_id = ?", [categoryId]);
-                // res.status(200).send("User deleted successfully");
-                
-                res.redirect('/admin-panel');
-            } catch (error) {
-
-                console.error("Error deleting user:", error);
-                res.status(500).send("An error occurred while deleting the category");
-            }
-        });
-
-    // -- CREATE GAME
-        app.get("/admin_panel_games/create", requireAdmin, async (req, res) => {
-            try {
-                res.render("games/create-game-form");
-            } catch (error) {
-                console.error("Error displaying form page:", error);
-                res.status(500).send("An error occurred while displaying form page");
-            }
-        });
-
-        app.post("/admin_panel_games/create_action", async (req, res) => {
-            try {
-                // Get the request body
-                const { category_type, game_cover, game_name, game_description, localpath, htp, featured } = req.body;
-
-                // Validate input
-                if (!category_type || !game_cover || !game_name || !game_description || !localpath || !htp || !featured) {
-                    return res.status(400).send("Missing required fields");
-                }
-
-                // Insert the user into the database
-                const queryResult = await query(
-                    `INSERT INTO game (category_type, game_cover, game_name, game_description, localpath, htp, featured ) VALUES (?, ?, ?, ?, ?, ?, ?)`,
-                    [category_type, game_cover, game_name, game_description, localpath, htp, featured]
-                );
-
-                res.redirect('/admin-panel');
-            } catch (error) {
-                // Handle errors
-                console.error("Error registering game:", error);
-                res.status(500).send("An error occurred while registering the game");
-            }
-        })
-    
-    // -- EDIT GAME
-        app.get("/admin_panel_games/edit/:gameId", requireAdmin, async (req, res) => {
-            try {
-                const { gameId } = req.params;
-                const gameData = await query("SELECT * FROM game WHERE game_id = ?", [gameId]);
-
-                res.render("games/edit-game", { game_data: gameData[0]});
-            } catch (error) {
-                console.error("Error displaying form page:", error);
-                res.status(500).send("An error occurred while displaying form page");
-            }
-        });
-
-        app.post("/admin_panel_games/edit_action/:gameId", async (req, res) => {
-            try {
-                const { gameId } = req.params;
-                const { category_type, game_cover, game_name, game_description, localpath, htp, featured } = req.body;
-                const queryParams = [];
-                
-                var updateQuery = 'UPDATE game SET';
-
-                if (category_type !== undefined) {
-                    updateQuery += ` category_type = ?, `;
-                    queryParams.push(category_type);
-                }
-                updateQuery += ` game_cover = ?, game_name = ?`;
-                
-                queryParams.push(game_cover);
-                queryParams.push(game_name);
-                
-                if (game_description !== '') {
-                    updateQuery += `, game_description = ?`;
-                    queryParams.push(game_description);
-                }
-
-                updateQuery += `, localpath = ?`;
-                queryParams.push(localpath);
-
-                if (htp !== '') {
-                    updateQuery += `, htp = ?`;
-                    queryParams.push(htp);
-                }
-
-                if (featured !== undefined) {
-                    updateQuery += `, featured = ?`;
-                    queryParams.push(featured);
-                }
-
-                updateQuery += ` WHERE game_id = ?`;
-                queryParams.push(gameId);
-                
-                const queryResult = await query(updateQuery, queryParams);
-        
-                res.redirect('/admin-panel');
-            } catch (error) {
-                // Handle errors
-                console.error("Error updating user:", error);
-                res.status(500).send("An error occurred while updating the user");
-            }
-        })
-
-    // -- DELETE GAME
-        app.get("/admin_panel_games/delete/confirm/:gameId", requireAdmin, async (req, res) => {
-            try {
-                const { gameId } = req.params;
-                const gameData = await query("SELECT * FROM game WHERE game_id = ?", [gameId]);
-        
-                res.render("games/delete-game-confirm", { game_data: gameData[0] });
-            } catch (error) {
-                console.error("Error displaying confirmation page:", error);
-                res.status(500).send("An error occurred while displaying confirmation page");
-            }
-        });
-
-        app.post("/admin_panel_games/delete/:gameId", async (req, res) => {
-            try {
-                const { gameId } = req.params;
-
-                await query("DELETE FROM game WHERE game_id = ?", [gameId]);
-                // res.status(200).send("User deleted successfully");
-                
-                res.redirect('/admin-panel');
-            } catch (error) {
-
-                console.error("Error deleting user:", error);
-                res.status(500).send("An error occurred while deleting the game");
-            }
-        });
-
-    // -- CREATE USER
-
-        app.get("/admin_panel_users/create", requireAdmin, async (req, res) => {
-            try {
-                res.render("users/create-user-form");
-            } catch (error) {
-                console.error("Error displaying form page:", error);
-                res.status(500).send("An error occurred while displaying form page");
-            }
-        });
-
-        app.post("/admin_panel_users/create_action", async (req, res) => {
-            try {
-                // Get the request body
-                const { username, email, password } = req.body;
-        
-                // Validate input
-                if (!username || !email || !password) {
-                    return res.status(400).send("Missing required fields");
-                }
-        
-                // Hash the password
-                const hashedPassword = await bcrypt.hash(password, 10);
-        
-                // Insert the user into the database
-                const queryResult = await query(
-                    `INSERT INTO users (username, email, passwd, user_role) VALUES (?, ?, ?, 1)`,
-                    [username, email, hashedPassword]
-                );
-        
-                res.redirect('/admin-panel');
-            } catch (error) {
-                // Handle errors
-                console.error("Error registering user:", error);
-                res.status(500).send("An error occurred while registering the user");
-            }
-        })
-
-    // -- EDIT USER
-        app.get("/admin_panel_users/edit/:userId", requireAdmin, async (req, res) => {
-            try {
-                const { userId } = req.params;
-                const userData = await query("SELECT * FROM users WHERE user_id = ?", [userId]);
-
-                res.render("users/edit-user", { user_data: userData[0]});
-            } catch (error) {
-                console.error("Error displaying confirmation page:", error);
-                res.status(500).send("An error occurred while displaying confirmation page");
-            }
-        });
-
-        app.post("/admin_panel_users/edit_action/:userId", async (req, res) => {
-            try {
-                // Get the request body
-                const { userId } = req.params;
-                const { username, email, password, user_role } = req.body;
-        
-                // Hash the password
-                const hashedPassword = await bcrypt.hash(password, 10);
-        
-                // Construct the parameter array for the query
-                const queryParams = [username, email, hashedPassword];
-        
-                // Construct the SET clause for the update query
-                let updateQuery = `UPDATE users SET username = ?, email = ?, passwd = ?`;
-        
-                // If user_role is provided, include it in the query and parameters
-                if (user_role !== undefined) {
-                    updateQuery += `, user_role = ?`;
-                    queryParams.push(user_role);
-                }
-        
-                // Add the userId parameter to the end of the array
-                queryParams.push(userId);
-        
-                // Add the WHERE clause to the update query
-                updateQuery += ` WHERE user_id = ?`;
-        
-                // Execute the update query
-                const queryResult = await query(updateQuery, queryParams);
-        
-                res.redirect('/admin-panel');
-            } catch (error) {
-                // Handle errors
-                console.error("Error updating user:", error);
-                res.status(500).send("An error occurred while updating the user");
-            }
-        })
-        
-
-    // -- DELETE USER
-        app.get("/admin_panel_users/delete/confirm/:userId", requireAdmin, async (req, res) => {
-            try {
-                const { userId } = req.params;
-                const userData = await query("SELECT * FROM users WHERE user_id = ?", [userId]);
-        
-                res.render("users/delete-user-confirm", { user_data: userData[0] });
-            } catch (error) {
-                console.error("Error displaying confirmation page:", error);
-                res.status(500).send("An error occurred while displaying confirmation page");
-            }
-        });
-
-        app.post("/admin_panel_users/delete/:userId", async (req, res) => {
-            try {
-                const { userId } = req.params;
-
-                await query("DELETE FROM users WHERE user_id = ?", [userId]);
-                // res.status(200).send("User deleted successfully");
-                
-                res.redirect('/admin-panel')
-            } catch (error) {
-
-                console.error("Error deleting user:", error);
-                res.status(500).send("An error occurred while deleting the user");
-            }
-        });
+    // -- DELETE (ADMIN-PANEL)
+    app.get("/admin_panel_category/delete/confirm/:categoryId", requireAdmin, adminPanelRoutes.renderDeleteCategoryConfirm); // CATEGORY
+    app.post("/admin_panel_category/delete/:categoryId", adminPanelRoutes.confirmedCategoryDelete); // CATEGORY
+    app.get("/admin_panel_games/delete/confirm/:gameId", requireAdmin, adminPanelRoutes.renderDeleteGameConfirm); // GAME
+    app.post("/admin_panel_games/delete/:gameId", adminPanelRoutes.confirmedGameDelete); // GAME
+    app.get("/admin_panel_users/delete/confirm/:userId", requireAdmin, adminPanelRoutes.renderDeleteUserConfirm); // USER
+    app.post("/admin_panel_users/delete/:userId", adminPanelRoutes.confirmedUserDelete); // USER
 
 // -- USER PROFILE ROUTES
 
 app.get('/my_profile/:userId', profileRoutes.showUserProfile);
 app.get('/add_edit_bio/:userId', profileRoutes.addEditUserBio);
 app.get('/user_linked_games/:userid', profileRoutes.userLinkedGames);
+app.get('/user/:userId/profile-image', profileRoutes.serveUserPFP);
 app.get('/uploadPFP/:userId', profileRoutes.uploadPFP);
 app.post('/uploadPFP/action/:userId', profileRoutes.uploadPFP_action);
 app.post('/add_edit_bio/action/:userId', profileRoutes.addEditUserBio_action);

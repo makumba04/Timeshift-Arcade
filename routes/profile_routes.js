@@ -15,7 +15,7 @@ const db = mysql.createPool({
 });
 const query = promisify(db.query).bind(db);
 
-// -- RUTAS (PROFILEa)
+// -- RUTAS (PROFILE)
 
 router.showUserProfile = function (req, res) {
     const {userId} = req.params;
@@ -39,6 +39,23 @@ router.addEditUserBio = function (req, res) {
     })
 }
 
+router.serveUserPFP = function (req, res) {
+    const { userId } = req.params;
+
+    db.query("SELECT fileName, Image FROM pfp_image WHERE user_id = ?", [userId], (err, results) => {
+        if (results.length === 0) {
+            return res.status(404).send("Image not found.");
+        }
+
+        const { fileName, Image } = results[0];
+        const mimeType = fileName.split('.').pop();
+        const contentType = mimeType === 'png' ? 'image/png' : 'image/jpeg';
+        
+        res.setHeader('Content-Type', contentType);
+        res.send(Image);
+    })
+};
+
 router.userLinkedGames = function (req, res) {
     const {userId} = req.params;
     db.query('SELECT game.* FROM game INNER JOIN saves ON game.game_id = saves.game_id INNER JOIN users ON users.user_id = saves.user_id WHERE users.user_id = ?', [userId], (err, results) => {
@@ -58,27 +75,44 @@ router.uploadPFP = function (req, res) {
     })
 }
 
-router.uploadPFP_action = function (req, res) {
+router.uploadPFP_action = async (req, res) => {
 
-    const { userId } = req.params;
-    const pfp_image = req.files.pfp_image;
-
-    // If no image submitted, return error
-    if (!pfp_image) {
-        return res.status(400).send('No image uploaded.');
-    }
-
-    // Move the uploaded image to our upload folder
-    pfp_image.mv(__dirname + './../public/images/pfp/' + pfp_image.name, function(err) {
-        if (err) {
-            console.error(err);
-            return res.status(500).send(err);
+    try {
+        const { userId } = req.params;
+        const pfp_image = req.files.pfp_image;
+        
+        if (!pfp_image) {
+            return res.status(400).send("No image file uploaded.");
         }
-        // File uploaded successfully
-        // res.sendStatus(200);
-        res.redirect(`/my_profile/${userId}`)
-    });
+
+        const pfp_filename = pfp_image.name;
+        const pfp_image_data = pfp_image.data;
+
+        var condition = await query("SELECT * FROM pfp_image WHERE user_id = ?", [userId]);
+
+        let Query;
+        let queryParams;
+
+        if (condition.length === 0) {
+            
+            Query = `INSERT INTO pfp_image (user_id, fileName, Image) VALUES (?, ?, ?)`;
+            queryParams = [userId, pfp_filename, pfp_image_data];
+        } else {
+            
+            Query = `UPDATE pfp_image SET fileName = ?, Image = ? WHERE user_id = ?`;
+            queryParams = [pfp_filename, pfp_image_data, userId];
+        }
+
+        await query(Query, queryParams);
+
+        res.redirect(`/my_profile/${userId}`);
+    } catch (error) {
+        console.error("Error updating user:", error);
+        res.status(500).send("An error occurred while updating the user");
+    }
 }
+
+
 
 router.addEditUserBio_action = async (req, res) => {
 
