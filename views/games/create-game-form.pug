@@ -5,11 +5,11 @@ block content
         article
             .content-wrapper-border
                 .content-wrapper(style="display: flex; justify-content: center; align-items: center;")
-                    form#bigger-form.form(action="/admin_panel_games/create_action" method="POST")    
+                    form#bigger-form.form(action="/admin_panel_games/create_action" method="POST" enctype="multipart/form-data")    
                         h2 Add game
                         div#register
                             input(type="number", name="category_type", placeholder="Category type")
-                            input(type="text", name="game_cover", placeholder="Game's cover localpath")
+                            input(type="file", name="game_cover")
                             input(type="text", name="game_name", placeholder="Game's name")
                             input(type="text", name="game_description", placeholder="Game's synopsis")
                             input(type="text", name="localpath", placeholder="Game's files localpath")

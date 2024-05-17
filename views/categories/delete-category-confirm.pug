@@ -6,7 +6,7 @@ block content
             h2 Are you sure you want to delete #{category_data.category_name}?
             .content-wrapper-border
                 .content-wrapper#delete
-                    form(action=`/admin_panel_category/delete/${category_data.category_id}` method="POST") 
+                    form(action=`/admin_panel_category/delete/${category_data.category_id}/${category_data.category_name}` method="POST") 
                         button#delete-btn(type="submit") Delete
                     a(href="/admin-panel")
                         button#cancel-btn(type="button") Cancel

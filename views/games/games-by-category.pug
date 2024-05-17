@@ -10,7 +10,7 @@ block content
                         for game in games 
                             section.game-block
                                 .game-desc 
-                                    img(src=`${game.game_cover}`, class="game-image")
+                                    img(src=`${game.cover_path}`, class="game-image")
                                     div.game-desc-txt
                                         h3 #{game.game_name}
                                         p #{game.game_description}

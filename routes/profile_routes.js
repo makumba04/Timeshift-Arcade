@@ -32,10 +32,7 @@ router.addEditUserBio = function (req, res) {
     const {userId} = req.params;
     db.query('SELECT * FROM users WHERE user_id = ?', [userId], (err, results) => {
         if(err) throw err;
-        res.render('profile/add_edit_bio', {
-            title: 'user_data',
-            user_data: results[0]
-        });
+        res.render('profile/add_edit_bio', { user_data: results[0], isLoggedIn: req.session.isLoggedIn, user_id: req.session.userId });
     })
 }
 
@@ -68,10 +65,7 @@ router.uploadPFP = function (req, res) {
     const {userId} = req.params;
     db.query('SELECT * FROM users WHERE user_id = ?', [userId], (err, results) => {
         if(err) throw err;
-        res.render('profile/uploadPFP', {
-            title: 'user_data',
-            user_data: results[0]
-        })
+        res.render('profile/uploadPFP', { user_data: results[0], isLoggedIn: req.session.isLoggedIn, user_id: req.session.userId })
     })
 }
 

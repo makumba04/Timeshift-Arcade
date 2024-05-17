@@ -6,7 +6,7 @@ block content
             h2 Are you sure you want to delete #{game_data.game_name}?
             .content-wrapper-border
                 .content-wrapper#delete
-                    form(action=`/admin_panel_games/delete/${game_data.game_id}` method="POST") 
+                    form(action=`/admin_panel_games/delete/${game_data.game_id}/${game_data.game_name}` method="POST") 
                         button#delete-btn(type="submit") Delete
                     a(href="/admin-panel")
                         button#cancel-btn(type="button") Cancel

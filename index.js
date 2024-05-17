@@ -109,9 +109,9 @@ app.get('/', function(req, res){
 
     // -- DELETE (ADMIN-PANEL)
     app.get("/admin_panel_category/delete/confirm/:categoryId", requireAdmin, adminPanelRoutes.renderDeleteCategoryConfirm); // CATEGORY
-    app.post("/admin_panel_category/delete/:categoryId", adminPanelRoutes.confirmedCategoryDelete); // CATEGORY
+    app.post("/admin_panel_category/delete/:categoryId/:categoryName", adminPanelRoutes.confirmedCategoryDelete); // CATEGORY
     app.get("/admin_panel_games/delete/confirm/:gameId", requireAdmin, adminPanelRoutes.renderDeleteGameConfirm); // GAME
-    app.post("/admin_panel_games/delete/:gameId", adminPanelRoutes.confirmedGameDelete); // GAME
+    app.post("/admin_panel_games/delete/:gameId/:gameName", adminPanelRoutes.confirmedGameDelete); // GAME
     app.get("/admin_panel_users/delete/confirm/:userId", requireAdmin, adminPanelRoutes.renderDeleteUserConfirm); // USER
     app.post("/admin_panel_users/delete/:userId", adminPanelRoutes.confirmedUserDelete); // USER
 

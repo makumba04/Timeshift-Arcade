@@ -5,11 +5,11 @@ block content
         article
             .content-wrapper-border
                 .content-wrapper(style="display: flex; justify-content: center; align-items: center;")
-                    form.form(action=`/admin_panel_games/edit_action/${game_data.game_id}` method="POST" autocomplete="off" style="margin: 20px 0 20px 0;")    
+                    form.form(action=`/admin_panel_games/edit_action/${game_data.game_id}` method="POST" enctype="multipart/form-data" autocomplete="off" style="margin: 20px 0 20px 0;")    
                         h2 Edit game
                         div#register
-                            input(type="number", name="category_type", placeholder="Category type", value=`${game_data.game_id}`)
-                            input(type="text", name="game_cover", placeholder="Game's cover localpath", value=`${game_data.game_cover}`)
+                            input(type="number", name="category_type", placeholder="Category type", value=`${game_data.category_type}`)
+                            input(type="file", name="game_cover")
                             input(type="text", name="game_name", placeholder="Game's name", value=`${game_data.game_name}`)
                             textarea(name="game_description", placeholder="Game's description")
                             input(type="text", name="localpath", placeholder="Game's files localpath", value=`${game_data.localpath}`)
