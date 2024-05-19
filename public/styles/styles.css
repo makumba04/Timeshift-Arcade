@@ -290,11 +290,23 @@ h3 {
     right: 0;
     bottom: 0;
 }
-
-.game-view {
-    border: 1px solid black;
-    width: 100%;
-    margin: 0 auto;
+#game-view-container {
+    width: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+#game-view {
+    width: 800px;
+    height: 600px;
+    margin: -30px 0 0 0;
+    font-family: Minecraftia;
+    font-size: 1.5em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid white;
+    background-color: rgba(128, 128, 128, 0.35);
 }
 
 p {

@@ -5,7 +5,7 @@ const { promisify } = require('util');
 const fs = require('fs');
 const fsp = require('fs').promises;
 const path = require('path');
-const { stringify } = require('querystring');
+const unzipper = require('unzipper');
 require('dotenv').config()
 
 const router = express.Router();
@@ -165,16 +165,32 @@ router.renderCreateGameForm = function (req, res) {res.render("games/create-game
 router.createGameAction = async (req, res) => {
     try {
 
+        const game_zip = req.files.game_zip;
         const game_cover = req.files.game_cover;
-        const { category_type, game_name, game_description, localpath, htp, featured } = req.body;
+        const { category_type, game_name, game_description, htp, featured } = req.body;
         const createQuery = `INSERT INTO game (category_type, game_name, game_description, localpath, htp, featured, cover_path ) VALUES (?, ?, ?, ?, ?, ?, ?)`;
-        const queryParams = [category_type, game_name, game_description, localpath, htp, featured];
+        const queryParams = [category_type, game_name, game_description];
 
-        if (!category_type || !game_cover || !game_name || !game_description || !localpath || !htp || !featured) {
+        if (!category_type || !game_cover || !game_name || !game_description || !htp || !featured) {
             return res.status(400).send("Missing required fields");
         }
 
         const sanitizedGameName = game_name.trim().toLowerCase().replace(/\s+/g, '_');
+
+        const zipFileName = `${sanitizedGameName}${path.extname(game_zip.name)}`;
+        const zipFilePath = path.join(__dirname, './../uploads/', zipFileName);
+        const extractPath = path.join(__dirname, './../public/games/', sanitizedGameName);
+        const localpath = `/games/${sanitizedGameName}/game.js`;
+        queryParams.push(localpath);
+        queryParams.push(htp);
+        queryParams.push(featured);
+
+        await fsp.writeFile(zipFilePath, game_zip.data);
+        
+        if (!fs.existsSync(extractPath)) {
+            fs.mkdirSync(extractPath, { recursive: true });
+        }
+
         const coverFileName = `${sanitizedGameName}${path.extname(game_cover.name)}`;
         const coverPath = path.join(__dirname, './../public/images/games-cover/', coverFileName);
         const coverPathSave = path.join('/images/games-cover/', coverFileName);
@@ -186,6 +202,16 @@ router.createGameAction = async (req, res) => {
                 return res.status(500).send(err);
             }
         });
+
+        fs.createReadStream(zipFilePath)
+            .pipe(unzipper.Extract({ path: extractPath }))
+            .on('close', async () => {
+                await fsp.unlink(zipFilePath);
+            })
+            .on('error', (err) => {
+                console.error('Error unzipping file:', err);
+                res.status(500).send('Error unzipping file');
+            });
 
         await query(createQuery, queryParams);
 
@@ -209,51 +235,53 @@ router.renderEditGameForm = function (req, res) {
 router.editGameAction = async (req, res) => {
     try {
         const { gameId } = req.params;
+        const game_zip = req.files ? req.files.game_zip : undefined;
         const game_cover = req.files ? req.files.game_cover : undefined;
-        const { category_type, game_name, game_description, localpath, htp, featured } = req.body;
+        const { category_type, game_name, game_description, htp, featured } = req.body;
         const queryParams = [];
-        
-        // Obtener el nombre de portada actual
-        const [currentGame] = await query('SELECT cover_path, game_name FROM game WHERE game_id = ?', [gameId]);
+
+        // Get the current game details
+        const [currentGame] = await query('SELECT cover_path, game_name, localpath FROM game WHERE game_id = ?', [gameId]);
         const currentCoverPath = currentGame.cover_path;
         const currentGameName = currentGame.game_name;
+        const currentLocalPath = currentGame.localpath;
+        const currentExtractPath = path.join(__dirname, './../public', path.dirname(currentLocalPath));
 
-        var updateQuery = 'UPDATE game SET';
+        let updateQuery = 'UPDATE game SET';
+        let setClauses = [];
 
         if (category_type !== undefined) {
-            updateQuery += ` category_type = ? `;
+            setClauses.push('category_type = ?');
             queryParams.push(category_type);
         }
-        updateQuery += `, game_name = ?`;
+
+        setClauses.push('game_name = ?');
         queryParams.push(game_name);
 
         if (game_description !== '') {
-            updateQuery += `, game_description = ?`;
+            setClauses.push('game_description = ?');
             queryParams.push(game_description);
         }
 
-        updateQuery += `, localpath = ?`;
-        queryParams.push(localpath);
-
         if (htp !== '') {
-            updateQuery += `, htp = ?`;
+            setClauses.push('htp = ?');
             queryParams.push(htp);
         }
 
         if (featured !== undefined) {
-            updateQuery += `, featured = ?`;
+            setClauses.push('featured = ?');
             queryParams.push(featured);
         }
 
         let newCoverPath = currentCoverPath;
 
-        if(game_cover) {
+        if (game_cover) {
             const sanitizedGameName = game_name.trim().toLowerCase().replace(/\s+/g, '_');
             const coverFileName = `${sanitizedGameName}${path.extname(game_cover.name)}`;
             const coverPath = path.join(__dirname, './../public/images/games-cover/', coverFileName);
             const coverPathSave = path.join('/images/games-cover/', coverFileName);
 
-            updateQuery += `, cover_path = ?`;
+            setClauses.push('cover_path = ?');
             queryParams.push(coverPathSave);
 
             if (fs.existsSync(coverPath)) {
@@ -267,7 +295,6 @@ router.editGameAction = async (req, res) => {
                 }
             });
         } else if (game_name !== currentGameName) {
-            // Si el nombre del juego cambia, renombrar el archivo de portada
             const sanitizedGameName = game_name.trim().toLowerCase().replace(/\s+/g, '_');
             const currentCoverFileName = path.basename(currentCoverPath);
             const newCoverFileName = `${sanitizedGameName}${path.extname(currentCoverFileName)}`;
@@ -277,21 +304,67 @@ router.editGameAction = async (req, res) => {
             fs.renameSync(currentCoverFilePath, newCoverFilePath);
             newCoverPath = path.join('/images/games-cover/', newCoverFileName);
 
-            updateQuery += `, cover_path = ?`;
+            setClauses.push('cover_path = ?');
             queryParams.push(newCoverPath);
         }
 
-        updateQuery += ` WHERE game_id = ?`;
+        if (game_zip) {
+            const sanitizedGameName = game_name.trim().toLowerCase().replace(/\s+/g, '_');
+            const zipFileName = `${sanitizedGameName}${path.extname(game_zip.name)}`;
+            const zipFilePath = path.join(__dirname, './../uploads/', zipFileName);
+            const newExtractPath = path.join(__dirname, './../public/games/', sanitizedGameName);
+            const newLocalPath = path.join('/games/', sanitizedGameName, '/game.js');
+
+            setClauses.push('localpath = ?');
+            queryParams.push(newLocalPath);
+
+            // Delete old game files
+            if (fs.existsSync(currentExtractPath)) {
+                fs.rmSync(currentExtractPath, { recursive: true, force: true });
+            }
+
+            // Save and extract new zip file
+            await fsp.writeFile(zipFilePath, game_zip.data);
+
+            if (!fs.existsSync(newExtractPath)) {
+                fs.mkdirSync(newExtractPath, { recursive: true });
+            }
+
+            fs.createReadStream(zipFilePath)
+                .pipe(unzipper.Extract({ path: newExtractPath }))
+                .on('close', async () => {
+                    await fsp.unlink(zipFilePath);
+                })
+                .on('error', (err) => {
+                    console.error('Error unzipping file:', err);
+                    return res.status(500).send('Error unzipping file');
+                });
+        } else if (game_name !== currentGameName) {
+            const sanitizedGameName = game_name.trim().toLowerCase().replace(/\s+/g, '_');
+            const currentGameDir = path.join(__dirname, './../public/games', currentGameName.trim().toLowerCase().replace(/\s+/g, '_'));
+            const newGameDir = path.join(__dirname, './../public/games/', sanitizedGameName);
+            newLocalPath = path.join('/games/', sanitizedGameName, '/game.js');
+
+            if (fs.existsSync(currentGameDir)) {
+                fs.renameSync(currentGameDir, newGameDir);
+            }
+
+            setClauses.push('localpath = ?');
+            queryParams.push(newLocalPath);
+        }
+
+        updateQuery += ' ' + setClauses.join(', ') + ' WHERE game_id = ?';
         queryParams.push(gameId);
 
         await query(updateQuery, queryParams);
 
-        res.redirect(`/admin-panel`);
+        res.redirect('/admin-panel');
     } catch (error) {
-        console.error("Error updating user:", error);
-        res.status(500).send("An error occurred while updating the user");
+        console.error("Error updating game:", error);
+        res.status(500).send("An error occurred while updating the game");
     }
-}
+};
+
 
 // DELETE GAME
 router.renderDeleteGameConfirm = function (req, res) {
@@ -306,9 +379,11 @@ router.confirmedGameDelete = async (req, res) => {
     try {
 
         const { gameId, gameName } = req.params;
-        const sanitizedGameName = path.join(__dirname, './../public/images/games-cover/', gameName.toLowerCase().trim() + '.jpg') ;
+        const sanitizedGameCover = path.join(__dirname, './../public/images/games-cover/', gameName.toLowerCase().trim() + '.jpg') ;
+        const sanitizedGamePath = path.join(__dirname, './../public/games', gameName.toLowerCase().trim());
 
-        await fsp.rm(`${sanitizedGameName}`);
+        await fsp.rm(`${sanitizedGameCover}`);
+        await fsp.rm(`${sanitizedGamePath}`, { recursive: true, force: true })
         await query("DELETE FROM game WHERE game_id = ?", [gameId]);
         // res.status(200).send("User deleted successfully");
         

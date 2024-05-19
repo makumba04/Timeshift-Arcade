@@ -1,12 +1,16 @@
 extends ../layouts/layout.pug
 
+block append head
+    script(src='/js/phaser.js')
+
 block content
     main
         article
             .content-wrapper-border
-                .content-wrapper
+                #game-view-container.content-wrapper
                     h2 #{game.game_name}
-                    .game-view
+                    #game-view
+                        .placeholder Próximamente...
             .content-wrapper-border
                 .content-wrapper
                     h2 How to play
@@ -16,10 +20,30 @@ block content
                     h2 Synopsis
                     p.htp-txt #{game.game_description}
 
-            
 block scripts
     script.
         var game_name = '#{game.game_name}';
         var oldTitle = document.title;
         var newTitle = oldTitle + ' - ' + game_name;
-        document.title = newTitle; 
+        document.title = newTitle;
+
+        // Lógica para manejar la carga del archivo del juego
+        document.addEventListener('DOMContentLoaded', function() {
+            var script = document.createElement('script');
+            script.src = '#{game.localpath}';
+            script.onload = function() {
+                // Remueve el mensaje de "Próximamente..." si el script se carga correctamente
+                var placeholder = document.querySelector('#game-view .placeholder');
+                if (placeholder) {
+                    placeholder.style.display = 'none';
+                }
+            };
+            script.onerror = function() {
+                // Muestra el mensaje de "Próximamente..." si el script no se carga
+                var placeholder = document.querySelector('#game-view .placeholder');
+                if (placeholder) {
+                    placeholder.style.display = 'block';
+                }
+            };
+            document.head.appendChild(script);
+        });
