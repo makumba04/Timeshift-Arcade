@@ -13,8 +13,8 @@ const db = mysql.createPool({
 const router = express.Router();
 
 router.showAllCategories = function(req, res) {
-    db.query('SELECT * FROM category', (err, results) => {
-        if (err) throw err;
+    db.query('SELECT * FROM category', (error, results) => {
+        if (error) throw error;
         res.render('categories/categories', {
             title: 'categories',
             categories: results,

@@ -19,8 +19,8 @@ const query = promisify(db.query).bind(db);
 
 router.showUserProfile = function (req, res) {
     const {userId} = req.params;
-    db.query('SELECT * FROM users WHERE user_id = ?', [userId], (err, results) => {
-        if(err) throw err;
+    db.query('SELECT * FROM users WHERE user_id = ?', [userId], (error, results) => {
+        if(error) throw error;
         res.render('profile/profile', {
             title: 'user_data',
             user_data: results[0]
@@ -30,8 +30,8 @@ router.showUserProfile = function (req, res) {
 
 router.addEditUserBio = function (req, res) {
     const {userId} = req.params;
-    db.query('SELECT * FROM users WHERE user_id = ?', [userId], (err, results) => {
-        if(err) throw err;
+    db.query('SELECT * FROM users WHERE user_id = ?', [userId], (error, results) => {
+        if(error) throw error;
         res.render('profile/add_edit_bio', { user_data: results[0], isLoggedIn: req.session.isLoggedIn, user_id: req.session.userId });
     })
 }
@@ -39,7 +39,7 @@ router.addEditUserBio = function (req, res) {
 router.serveUserPFP = function (req, res) {
     const { userId } = req.params;
 
-    db.query("SELECT fileName, Image FROM pfp_image WHERE user_id = ?", [userId], (err, results) => {
+    db.query("SELECT fileName, Image FROM pfp_image WHERE user_id = ?", [userId], (error, results) => {
         if (results.length === 0) {
             return res.status(404).send("Image not found.");
         }
@@ -55,16 +55,16 @@ router.serveUserPFP = function (req, res) {
 
 router.userLinkedGames = function (req, res) {
     const {userId} = req.params;
-    db.query('SELECT game.* FROM game INNER JOIN saves ON game.game_id = saves.game_id INNER JOIN users ON users.user_id = saves.user_id WHERE users.user_id = ?', [userId], (err, results) => {
-        if (err) throw err;
+    db.query('SELECT game.* FROM game INNER JOIN saves ON game.game_id = saves.game_id INNER JOIN users ON users.user_id = saves.user_id WHERE users.user_id = ?', [userId], (error, results) => {
+        if (error) throw error;
         res.json(results);
     })
 }
 
 router.uploadPFP = function (req, res) {
     const {userId} = req.params;
-    db.query('SELECT * FROM users WHERE user_id = ?', [userId], (err, results) => {
-        if(err) throw err;
+    db.query('SELECT * FROM users WHERE user_id = ?', [userId], (error, results) => {
+        if(error) throw error;
         res.render('profile/uploadPFP', { user_data: results[0], isLoggedIn: req.session.isLoggedIn, user_id: req.session.userId })
     })
 }

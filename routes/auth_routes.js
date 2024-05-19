@@ -75,9 +75,9 @@ router.processLogin = async(req, res) => {
 }
 
 router.logout = function(req, res) {
-    req.session.destroy(err => {
-        if (err) {
-            console.error("Error logging out:", err);
+    req.session.destroy(error => {
+        if (error) {
+            console.error("Error logging out:", error);
             res.status(500).send("An error occurred while logging out");
         } else {
             

@@ -13,8 +13,8 @@ const router = express.Router();
 
 router.showGameById = function(req, res) {
     const {id} = req.params;
-    db.query('SELECT * FROM game WHERE game_id = ?', [id], (err, results) => {
-        if (err) throw err;
+    db.query('SELECT * FROM game WHERE game_id = ?', [id], (error, results) => {
+        if (error) throw error;
         res.render('games/game', {
             title: 'game',
             game: results[0],
@@ -26,8 +26,8 @@ router.showGameById = function(req, res) {
 
 router.showGamesByCategory = function(req, res) {
     const {id} = req.params;
-    db.query('SELECT * FROM game INNER JOIN category ON category.category_id = game.category_type WHERE game.category_type = ?', [id], (err, results) => {
-        if (err) throw err;
+    db.query('SELECT * FROM game INNER JOIN category ON category.category_id = game.category_type WHERE game.category_type = ?', [id], (error, results) => {
+        if (error) throw error;
         res.render('games/games-by-category', {
             title: 'games',
             games: results,

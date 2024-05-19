@@ -47,10 +47,10 @@ router.createCategoryAction = async (req, res) => {
 
         await query(createQuery, queryParams);
 
-        category_cover.mv(coverPath, function(err) {
-            if (err) {
-                console.error(err);
-                return res.status(500).send(err);
+        category_cover.mv(coverPath, function(error) {
+            if (error) {
+                console.error(error);
+                return res.status(500).send(error);
             }
         });
 
@@ -66,8 +66,8 @@ router.createCategoryAction = async (req, res) => {
 router.renderEditCategoryForm = function (req, res) {
 
     const { categoryId } = req.params;
-    db.query("SELECT * FROM category WHERE category_id = ?", [categoryId], (err, results) => {
-        if (err) throw err;
+    db.query("SELECT * FROM category WHERE category_id = ?", [categoryId], (error, results) => {
+        if (error) throw error;
         res.render("categories/edit-category", { category_data: results[0] });
     })
 }
@@ -103,10 +103,10 @@ router.editCategoryAction = async (req, res) => {
                 fs.unlinkSync(coverPath);
             }
 
-            category_cover.mv(coverPath, function(err) {
-                if (err) {
-                    console.error(err);
-                    return res.status(500).send(err);
+            category_cover.mv(coverPath, function(error) {
+                if (error) {
+                    console.error(error);
+                    return res.status(500).send(error);
                 }
             });
         } else if (category_name !== currentCategoryName) {
@@ -139,8 +139,8 @@ router.editCategoryAction = async (req, res) => {
 // DELETE CATEGORY
 router.renderDeleteCategoryConfirm = function (req, res) {
     const { categoryId } = req.params;
-    db.query("SELECT * FROM category WHERE category_id = ?", [categoryId], (err, results) => {
-        if (err) throw err;
+    db.query("SELECT * FROM category WHERE category_id = ?", [categoryId], (error, results) => {
+        if (error) throw error;
         res.render("categories/delete-category-confirm", { category_data: results[0] });
     })
 }
@@ -196,10 +196,10 @@ router.createGameAction = async (req, res) => {
         const coverPathSave = path.join('/images/games-cover/', coverFileName);
         queryParams.push(coverPathSave);
 
-        game_cover.mv(coverPath, function(err) {
-            if (err) {
-                console.error(err);
-                return res.status(500).send(err);
+        game_cover.mv(coverPath, function(error) {
+            if (error) {
+                console.error(error);
+                return res.status(500).send(error);
             }
         });
 
@@ -208,8 +208,8 @@ router.createGameAction = async (req, res) => {
             .on('close', async () => {
                 await fsp.unlink(zipFilePath);
             })
-            .on('error', (err) => {
-                console.error('Error unzipping file:', err);
+            .on('error', (error) => {
+                console.error('Error unzipping file:', error);
                 res.status(500).send('Error unzipping file');
             });
 
@@ -227,8 +227,8 @@ router.createGameAction = async (req, res) => {
 router.renderEditGameForm = function (req, res) {
 
     const { gameId } = req.params;
-    db.query("SELECT * FROM game WHERE game_id = ?", [gameId], (err, results) => {
-        if (err) throw err;
+    db.query("SELECT * FROM game WHERE game_id = ?", [gameId], (error, results) => {
+        if (error) throw error;
         res.render("games/edit-game", { game_data: results[0] });
     })
 }
@@ -288,10 +288,10 @@ router.editGameAction = async (req, res) => {
                 fs.unlinkSync(coverPath);
             }
 
-            game_cover.mv(coverPath, function(err) {
-                if (err) {
-                    console.error(err);
-                    return res.status(500).send(err);
+            game_cover.mv(coverPath, function(error) {
+                if (error) {
+                    console.error(error);
+                    return res.status(500).send(error);
                 }
             });
         } else if (game_name !== currentGameName) {
@@ -335,8 +335,8 @@ router.editGameAction = async (req, res) => {
                 .on('close', async () => {
                     await fsp.unlink(zipFilePath);
                 })
-                .on('error', (err) => {
-                    console.error('Error unzipping file:', err);
+                .on('error', (error) => {
+                    console.error('Error unzipping file:', error);
                     return res.status(500).send('Error unzipping file');
                 });
         } else if (game_name !== currentGameName) {
@@ -370,8 +370,8 @@ router.editGameAction = async (req, res) => {
 router.renderDeleteGameConfirm = function (req, res) {
     
     const { gameId } = req.params;
-    db.query("SELECT * FROM game WHERE game_id = ?", [gameId], (err, results) => {
-        if (err) throw err;
+    db.query("SELECT * FROM game WHERE game_id = ?", [gameId], (error, results) => {
+        if (error) throw error;
         res.render("games/delete-game-confirm", { game_data: results[0] });
     })
 }
@@ -425,8 +425,8 @@ router.createUserAction = async (req, res) => {
 router.renderEditUserForm = function (req, res) {
 
     const { userId } = req.params;
-    db.query("SELECT * FROM users WHERE user_id = ?", [userId], (err, results) => {
-        if (err) throw err;
+    db.query("SELECT * FROM users WHERE user_id = ?", [userId], (error, results) => {
+        if (error) throw error;
         res.render("users/edit-user", { user_data: results[0] });
     })
 }
@@ -462,8 +462,8 @@ router.editUserAction = async (req, res) => {
 router.renderDeleteUserConfirm = function (req, res) {
     
     const { userId } = req.params;
-    db.query("SELECT * FROM users WHERE user_id = ?", [userId], (err, results) => {
-        if (err) throw err;
+    db.query("SELECT * FROM users WHERE user_id = ?", [userId], (error, results) => {
+        if (error) throw error;
         res.render("users/delete-user-confirm", { user_data: results[0] });
     })
 }
