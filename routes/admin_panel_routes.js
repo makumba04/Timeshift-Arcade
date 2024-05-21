@@ -443,7 +443,7 @@ router.editUserAction = async (req, res) => {
         queryParams.push(userId);
         updateQuery += ` WHERE user_id = ?`;
 
-        const queryResult = await query(updateQuery, queryParams);
+        await query(updateQuery, queryParams);
 
         res.status(200).redirect('/admin-panel');
     } catch (error) {
