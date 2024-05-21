@@ -54,7 +54,7 @@ router.createCategoryAction = async (req, res) => {
             }
         });
 
-        res.redirect('/admin-panel');
+        res.status(200).redirect('/admin-panel');
     } catch (error) {
 
         console.error("Error registering category:", error);
@@ -129,7 +129,7 @@ router.editCategoryAction = async (req, res) => {
 
         await query(updateQuery, queryParams);
 
-        res.redirect('/admin-panel');
+        res.status(200).redirect('/admin-panel');
     } catch (error) {
         console.error("Error updating category:", error);
         res.status(500).send("An error occurred while updating the category");
@@ -153,7 +153,7 @@ router.confirmedCategoryDelete = async (req, res) => {
         await query("DELETE FROM category WHERE category_id = ?", [categoryId]);
         // res.status(200).send("User deleted successfully");
         
-        res.redirect('/admin-panel');
+        res.status(200).redirect('/admin-panel');
     } catch (error) {
         console.error("Error deleting user:", error);
         res.status(500).send("An error occurred while deleting the category");
@@ -180,7 +180,7 @@ router.createGameAction = async (req, res) => {
         const zipFileName = `${sanitizedGameName}${path.extname(game_zip.name)}`;
         const zipFilePath = path.join(__dirname, './../uploads/', zipFileName);
         const extractPath = path.join(__dirname, './../public/games/', sanitizedGameName);
-        const localpath = `/games/${sanitizedGameName}/game.js`;
+        const localpath = `/games/${sanitizedGameName}/main.js`;
         queryParams.push(localpath);
         queryParams.push(htp);
         queryParams.push(featured);
@@ -215,11 +215,9 @@ router.createGameAction = async (req, res) => {
 
         await query(createQuery, queryParams);
 
-        res.redirect('/admin-panel');
+        res.status(200).redirect('/admin-panel');
     } catch (error) {
-
-        console.error("Error registering game:", error);
-        res.status(500).send("An error occurred while registering the game");
+        res.status(500).redirect('/admin-panel');
     }
 }
 
@@ -313,7 +311,7 @@ router.editGameAction = async (req, res) => {
             const zipFileName = `${sanitizedGameName}${path.extname(game_zip.name)}`;
             const zipFilePath = path.join(__dirname, './../uploads/', zipFileName);
             const newExtractPath = path.join(__dirname, './../public/games/', sanitizedGameName);
-            const newLocalPath = path.join('/games/', sanitizedGameName, '/game.js');
+            const newLocalPath = path.join('/games/', sanitizedGameName, '/main.js');
 
             setClauses.push('localpath = ?');
             queryParams.push(newLocalPath);
@@ -343,7 +341,7 @@ router.editGameAction = async (req, res) => {
             const sanitizedGameName = game_name.trim().toLowerCase().replace(/\s+/g, '_');
             const currentGameDir = path.join(__dirname, './../public/games', currentGameName.trim().toLowerCase().replace(/\s+/g, '_'));
             const newGameDir = path.join(__dirname, './../public/games/', sanitizedGameName);
-            newLocalPath = path.join('/games/', sanitizedGameName, '/game.js');
+            newLocalPath = path.join('/games/', sanitizedGameName, '/main.js');
 
             if (fs.existsSync(currentGameDir)) {
                 fs.renameSync(currentGameDir, newGameDir);
@@ -358,10 +356,9 @@ router.editGameAction = async (req, res) => {
 
         await query(updateQuery, queryParams);
 
-        res.redirect('/admin-panel');
+        res.status(200).redirect('/admin-panel');
     } catch (error) {
-        console.error("Error updating game:", error);
-        res.status(500).send("An error occurred while updating the game");
+        res.status(500).redirect('/admin-panel');
     }
 };
 
@@ -387,11 +384,9 @@ router.confirmedGameDelete = async (req, res) => {
         await query("DELETE FROM game WHERE game_id = ?", [gameId]);
         // res.status(200).send("User deleted successfully");
         
-        res.redirect('/admin-panel');
+        res.status(202).redirect('/admin-panel');
     } catch (error) {
-
-        console.error("Error deleting user:", error);
-        res.status(500).send("An error occurred while deleting the game");
+        res.status(500).redirect('/admin-panel');
     }
 }
 
@@ -413,7 +408,7 @@ router.createUserAction = async (req, res) => {
 
         await query(createQuery, queryParams);
 
-        res.redirect('/admin-panel');
+        res.status(200).redirect('/admin-panel');
     } catch (error) {
         // Handle errors
         console.error("Error registering user:", error);
@@ -450,7 +445,7 @@ router.editUserAction = async (req, res) => {
 
         const queryResult = await query(updateQuery, queryParams);
 
-        res.redirect('/admin-panel');
+        res.status(200).redirect('/admin-panel');
     } catch (error) {
 
         console.error("Error updating user:", error);

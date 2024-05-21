@@ -21,7 +21,6 @@ app.use('/auth', authRoutes);
 app.use('/admin-panel', adminPanelRoutes);
 app.use(fileUpload());
 
-app.use(errorHandler);
 app.use(express.static(__dirname + '/public'));
 app.use(favicon(__dirname + '/public/images/favicon.ico'));
 app.use(express.urlencoded({ extended: true }));

@@ -121,9 +121,7 @@ router.addEditUserBio_action = async (req, res) => {
         
         res.redirect(`/my_profile/${userId}`);
     } catch (error) {
-        
-        console.error("Error updating user:", error);
-        res.status(500).send("An error occurred while updating the user");
+        res.status(500).redirect('/admin-panel');
     }
 }
 
