@@ -23,13 +23,19 @@ router.processRegister = async(req, res) => {
     try {
         const { username, email, password } = req.body;
 
+        emailExists = await query('SELECT * FROM users WHERE email =?', [email])
+
+        if( usernameExists.length != 0 ) {
+            return res.status(500).redirect(`/auth?statusmessage=${encodeURIComponent('An account has already registered with this email.')}`)
+        }
+
         if (!username || !email || !password) {
-            return res.status(400).send("Missing required fields");
+            return res.status(400).redirect(`/auth?statusmessage=${encodeURIComponent('Missing required fields')}`);
         }
 
         const hashedPassword = await bcrypt.hash(password, 10);
 
-        const queryResult = await query(
+        await query(
             `INSERT INTO users (username, email, passwd, user_role) VALUES (?, ?, ?, 1)`,
             [username, email, hashedPassword]
         );
@@ -47,30 +53,30 @@ router.processLogin = async(req, res) => {
         const { email, password } = req.body;
 
         if (!email || !password) {
-            return res.status(400).send("Missing email or password");
+            return res.status(400).redirect(`/auth?statusmessage=${encodeURIComponent('Missing email or password')}`);
         }
 
         const user = await query("SELECT * FROM users WHERE email = ?", [email]);
 
         if (user.length === 0) {
-            return res.status(401).send("Invalid email or password");
+            return res.status(400).redirect(`/auth?statusmessage=${encodeURIComponent('Invalid email or password')}`);
         }
 
         const isValidPassword = await bcrypt.compare(password, user[0].passwd);
 
         if (!isValidPassword) {
-            return res.status(401).send("Invalid email or password");
+            return res.status(401).redirect(`/auth?statusmessage=${encodeURIComponent('Invalid email or password')}`);
         }
 
         req.session.userId = user[0].user_id;
         req.session.userRoleLevel = user[0].user_role;
         req.session.isLoggedIn = true;
 
-        res.redirect("/");
+        res.status(200).redirect(`/?statusmessage=${encodeURIComponent('Logged in successfully. Welcome back, boss!')}`);
 
     } catch (error) {
         console.error("Error logging in:", error);
-        res.status(500).send("An error occurred while logging in");
+        res.status(500).redirect(`/?statusmessage=${encodeURIComponent('An error occurred while logging in')}`);
     }
 }
 
@@ -78,10 +84,9 @@ router.logout = function(req, res) {
     req.session.destroy(error => {
         if (error) {
             console.error("Error logging out:", error);
-            res.status(500).send("An error occurred while logging out");
+            res.status(500).redirect(`/?statusmessage=${encodeURIComponent('An error occurred while logging out')}`);
         } else {
-            
-            res.redirect("/");
+            res.status(200).redirect(`/?statusmessage=${encodeURIComponent('Logged out successfully!')}`);
         }
     });
 }

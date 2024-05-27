@@ -2,6 +2,9 @@ extends ../layouts/layout-admin.pug
 
 block content
     main#admin-panel-main
+        if statusmessage
+            .status-message
+                p statusmessage
         h2 Manage everything from here, boss!
         article#admin-panel-article
             #admin-panel-sidemenu
@@ -30,3 +33,12 @@ block scripts
         document.addEventListener('DOMContentLoaded', function(){
             searchAllCategories();
         })
+
+        const urlParams = new URLSearchParams(window.location.search);
+        const statusmessage = urlParams.get('statusmessage');
+        if (statusmessage) {
+            const statusDiv = document.createElement('div');
+            statusDiv.className = 'status-message';
+            statusDiv.innerHTML = `<p>${statusmessage}</p>`;
+            document.querySelector('#admin-panel-main').prepend(statusDiv);
+        }

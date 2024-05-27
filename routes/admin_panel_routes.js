@@ -34,6 +34,10 @@ router.createCategoryAction = async (req, res) => {
         const createQuery = `INSERT INTO category (category_name, category_description, category_cover_path) VALUES (?, ?, ?)`;
         const queryParams = [category_name, category_description];
         
+        if ( path.extname(category_cover.name) != '.png' ) {
+            return res.status(415).redirect(`/admin-panel?statusmessage=${encodeURIComponent('Invalid file type. Only .png files are allowed.')}`);
+        }
+
         if (!category_name || !category_description) {
             return res.status(400).send("Missing required fields");
         }
@@ -45,26 +49,24 @@ router.createCategoryAction = async (req, res) => {
 
         queryParams.push(coverPathSave);
 
-        await query(createQuery, queryParams);
-
         category_cover.mv(coverPath, function(error) {
             if (error) {
                 console.error(error);
-                return res.status(500).send(error);
+                return res.status(500).send(error).redirect(`/admin-panel?statusmessage=${encodeURIComponent('An error ocurred while moving the cover to the designed path.')}`);
             }
         });
 
-        res.status(200).redirect('/admin-panel');
-    } catch (error) {
+        await query(createQuery, queryParams);
 
-        console.error("Error registering category:", error);
-        res.status(500).send("An error occurred while registering the category");
+        res.status(200).redirect(`/admin-panel?statusmessage=${encodeURIComponent('Category created successfully')}`);
+    } catch (error) {
+        console.error("Error creating category:", error);
+        res.status(500).redirect(`/admin-panel?statusmessage=${encodeURIComponent('An error occurred while creating the category')}`);
     }
 }
 
 // EDIT CATEGORY
 router.renderEditCategoryForm = function (req, res) {
-
     const { categoryId } = req.params;
     db.query("SELECT * FROM category WHERE category_id = ?", [categoryId], (error, results) => {
         if (error) throw error;
@@ -78,11 +80,13 @@ router.editCategoryAction = async (req, res) => {
         const { category_name, category_description } = req.body;
         console.log(category_cover);
 
-        // Construir la consulta de actualización y los parámetros
         let updateQuery = 'UPDATE category SET category_name = ?, category_description = ?';
         const queryParams = [category_name, category_description];
+        
+        if (category_cover != undefined && path.extname(category_cover.name) != '.png' ) {
+            return res.status(415).redirect(`/admin-panel?statusmessage=${encodeURIComponent('Invalid file type. Only .png files are allowed.')}`);
+        }
 
-        // Obtener el nombre de portada actual
         const [currentCategory] = await query('SELECT category_cover_path, category_name FROM category WHERE category_id = ?', [categoryId]);
         const currentCoverPath = currentCategory.category_cover_path;
         const currentCategoryName = currentCategory.category_name;
@@ -90,7 +94,6 @@ router.editCategoryAction = async (req, res) => {
         let newCoverPath = currentCoverPath;
 
         if (category_cover) {
-            // Si se ha subido una nueva portada
             const sanitizedCategoryName = category_name.trim().toLowerCase().replace(/\s+/g, '_');
             const coverFileName = `${sanitizedCategoryName}${path.extname(category_cover.name)}`;
             const coverPath = path.join(__dirname, './../public/images/categories-cover/', coverFileName);
@@ -110,7 +113,6 @@ router.editCategoryAction = async (req, res) => {
                 }
             });
         } else if (category_name !== currentCategoryName) {
-            // Si el nombre de la categoría ha cambiado pero no se ha subido una nueva portada
             const sanitizedCategoryName = category_name.trim().toLowerCase().replace(/\s+/g, '_');
             const currentCoverFileName = path.basename(currentCoverPath);
             const newCoverFileName = `${sanitizedCategoryName}${path.extname(currentCoverFileName)}`;
@@ -129,10 +131,10 @@ router.editCategoryAction = async (req, res) => {
 
         await query(updateQuery, queryParams);
 
-        res.status(200).redirect('/admin-panel');
+        res.status(200).redirect(`/admin-panel?statusmessage=${encodeURIComponent('Category edited successfully')}`);
     } catch (error) {
-        console.error("Error updating category:", error);
-        res.status(500).send("An error occurred while updating the category");
+        console.error("Error editing category:", error);
+        res.status(500).redirect(`/admin-panel?statusmessage=${encodeURIComponent('An error occurred while editing the category')}`);
     }
 }
 
@@ -151,12 +153,11 @@ router.confirmedCategoryDelete = async (req, res) => {
 
         await fsp.rm(`${sanitizedCategoryName}`);
         await query("DELETE FROM category WHERE category_id = ?", [categoryId]);
-        // res.status(200).send("User deleted successfully");
         
-        res.status(200).redirect('/admin-panel');
+        res.status(200).redirect(`/admin-panel?statusmessage=${encodeURIComponent('Category deleted successfully')}`);
     } catch (error) {
-        console.error("Error deleting user:", error);
-        res.status(500).send("An error occurred while deleting the category");
+        console.error("Error deleting category:", error);
+        res.status(500).redirect(`/admin-panel?statusmessage=${encodeURIComponent('An error occurred while deleting the category')}`);
     }
 }
 
@@ -164,7 +165,6 @@ router.confirmedCategoryDelete = async (req, res) => {
 router.renderCreateGameForm = function (req, res) {res.render("games/create-game-form");}
 router.createGameAction = async (req, res) => {
     try {
-
         const game_zip = req.files.game_zip;
         const game_cover = req.files.game_cover;
         const { category_type, game_name, game_description, htp, featured } = req.body;
@@ -215,9 +215,10 @@ router.createGameAction = async (req, res) => {
 
         await query(createQuery, queryParams);
 
-        res.status(200).redirect('/admin-panel');
+        res.status(200).redirect(`/admin-panel?statusmessage=${encodeURIComponent('Game created successfully')}`);
     } catch (error) {
-        res.status(500).redirect('/admin-panel');
+        console.error('Error creating game: ', error);
+        res.status(500).redirect(`/admin-panel?statusmessage=${encodeURIComponent('An error occurred while creating the game')}`);
     }
 }
 
@@ -238,7 +239,6 @@ router.editGameAction = async (req, res) => {
         const { category_type, game_name, game_description, htp, featured } = req.body;
         const queryParams = [];
 
-        // Get the current game details
         const [currentGame] = await query('SELECT cover_path, game_name, localpath FROM game WHERE game_id = ?', [gameId]);
         const currentCoverPath = currentGame.cover_path;
         const currentGameName = currentGame.game_name;
@@ -316,12 +316,10 @@ router.editGameAction = async (req, res) => {
             setClauses.push('localpath = ?');
             queryParams.push(newLocalPath);
 
-            // Delete old game files
             if (fs.existsSync(currentExtractPath)) {
                 fs.rmSync(currentExtractPath, { recursive: true, force: true });
             }
 
-            // Save and extract new zip file
             await fsp.writeFile(zipFilePath, game_zip.data);
 
             if (!fs.existsSync(newExtractPath)) {
@@ -356,16 +354,16 @@ router.editGameAction = async (req, res) => {
 
         await query(updateQuery, queryParams);
 
-        res.status(200).redirect('/admin-panel');
+        res.status(200).redirect(`/admin-panel?statusmessage=${encodeURIComponent('Game edited successfully')}`);
     } catch (error) {
-        res.status(500).redirect('/admin-panel');
+        console.error('Error editing game: ', error);
+        res.status(500).redirect(`/admin-panel?statusmessage=${encodeURIComponent('An error occurred while editing the game')}`);
     }
 };
 
 
 // DELETE GAME
 router.renderDeleteGameConfirm = function (req, res) {
-    
     const { gameId } = req.params;
     db.query("SELECT * FROM game WHERE game_id = ?", [gameId], (error, results) => {
         if (error) throw error;
@@ -374,7 +372,6 @@ router.renderDeleteGameConfirm = function (req, res) {
 }
 router.confirmedGameDelete = async (req, res) => {
     try {
-
         const { gameId, gameName } = req.params;
         const sanitizedGameCover = path.join(__dirname, './../public/images/games-cover/', gameName.toLowerCase().trim() + '.jpg') ;
         const sanitizedGamePath = path.join(__dirname, './../public/games', gameName.toLowerCase().trim());
@@ -382,18 +379,17 @@ router.confirmedGameDelete = async (req, res) => {
         await fsp.rm(`${sanitizedGameCover}`);
         await fsp.rm(`${sanitizedGamePath}`, { recursive: true, force: true })
         await query("DELETE FROM game WHERE game_id = ?", [gameId]);
-        // res.status(200).send("User deleted successfully");
         
-        res.status(202).redirect('/admin-panel');
+        res.status(200).redirect(`/admin-panel?statusmessage=${encodeURIComponent('Game deleted successfully')}`);
     } catch (error) {
-        res.status(500).redirect('/admin-panel');
+        console.error('Error deleting game: ', error);
+        res.status(500).redirect(`/admin-panel?statusmessage=${encodeURIComponent('An error occurred while deleting the game')}`);
     }
 }
 
 // CREATE USER
 router.renderCreateUserForm = function (req, res) {res.render("users/create-user-form");}
 router.createUserAction = async (req, res) => {
-
     try {
         const { username, email, password } = req.body;
 
@@ -408,17 +404,15 @@ router.createUserAction = async (req, res) => {
 
         await query(createQuery, queryParams);
 
-        res.status(200).redirect('/admin-panel');
+        res.status(200).redirect(`/admin-panel?statusmessage=${encodeURIComponent('User created successfully')}`);
     } catch (error) {
-        // Handle errors
-        console.error("Error registering user:", error);
-        res.status(500).send("An error occurred while registering the user");
+        console.error('Error creating user: ', error);
+        res.status(500).redirect(`/admin-panel?statusmessage=${encodeURIComponent('An error occurred while creating the category')}`);
     }
 }
 
 // EDIT USER
 router.renderEditUserForm = function (req, res) {
-
     const { userId } = req.params;
     db.query("SELECT * FROM users WHERE user_id = ?", [userId], (error, results) => {
         if (error) throw error;
@@ -426,9 +420,7 @@ router.renderEditUserForm = function (req, res) {
     })
 }
 router.editUserAction = async (req, res) => {
-
     try {
-        // Get the request body
         const { userId } = req.params;
         const { username, email, password, user_role } = req.body;
         const hashedPassword = await bcrypt.hash(password, 10);
@@ -445,17 +437,15 @@ router.editUserAction = async (req, res) => {
 
         await query(updateQuery, queryParams);
 
-        res.status(200).redirect('/admin-panel');
+        res.status(200).redirect(`/admin-panel?statusmessage=${encodeURIComponent('User edited successfully')}`);
     } catch (error) {
-
-        console.error("Error updating user:", error);
-        res.status(500).send("An error occurred while updating the user");
+        console.error('Error editing user: ', error);
+        res.status(500).redirect(`/admin-panel?statusmessage=${encodeURIComponent('An error occurred while editing the user')}`);
     }
 }
 
 // DELETE USER
 router.renderDeleteUserConfirm = function (req, res) {
-    
     const { userId } = req.params;
     db.query("SELECT * FROM users WHERE user_id = ?", [userId], (error, results) => {
         if (error) throw error;
@@ -464,15 +454,13 @@ router.renderDeleteUserConfirm = function (req, res) {
 }
 router.confirmedUserDelete = async (req, res) => {
     try {
-
         const { userId } = req.params;
         await query("DELETE FROM users WHERE user_id = ?", [userId]);
-        // res.status(200).send("User deleted successfully");
-        res.redirect('/admin-panel')
+        
+        res.status(200).redirect(`/admin-panel?statusmessage=${encodeURIComponent('User deleted successfully')}`);
     } catch (error) {
-
-        console.error("Error deleting user:", error);
-        res.status(500).send("An error occurred while deleting the user");
+        console.error('Error deleting user: ', error);
+        res.status(500).redirect(`/admin-panel?statusmessage=${encodeURIComponent('An error occurred while deleting the user')}`);
     }
 }
 

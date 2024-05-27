@@ -4,7 +4,10 @@ block append head
     - var isAuthPage = true
 
 block content 
-    main 
+    main#auth-main
+        if statusmessage
+            .status-message
+                p statusmessage
         article
             .content-wrapper-border
                 #form-wrapper.content-wrapper
@@ -27,3 +30,12 @@ block scripts
         var oldTitle = document.title;
         var newTitle = oldTitle + ' - Authentication';
         document.title = newTitle; 
+
+        const urlParams = new URLSearchParams(window.location.search);
+        const statusmessage = urlParams.get('statusmessage');
+        if (statusmessage) {
+            const statusDiv = document.createElement('div');
+            statusDiv.className = 'status-message';
+            statusDiv.innerHTML = `<p>${statusmessage}</p>`;
+            document.querySelector('#auth-main').prepend(statusDiv);
+        }
