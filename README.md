@@ -10,12 +10,12 @@ Timeshift Arcade es un sitio web que permite a los usuarios jugar a los juegos d
 
 Actualmente Timeshift Arcade es solo un proyecto, no tiene host ni página propia, pero eso no quita que no se pueda disfrutar del proyecto. Por ahora, para poder jugar en Timeshift Arcade y probar la app web debes tener instalado Node. Los pasos para poder arrancar el proyecto serían los siguientes.
 
-1. - Instalar Node y Xampp en tu sistema.
-2. - Clonar el repositorio de Timeshift Arcade.
-3. - Abrir una ventana de Powershell en la raíz del directorio de Timeshift Arcade.
-4. - En el navegador buscamos "localhost" para entrar en Xampp.
-5. - Importamos el archivo .sql de la base de datos.
-6. - Introducir el comando "node index.js" en el terminal de Powershell.
+- Instalar Node y Xampp en tu sistema.
+- Clonar el repositorio de Timeshift Arcade.
+- Abrir una ventana de Powershell en la raíz del directorio de Timeshift Arcade.
+- En el navegador buscamos "localhost" para entrar en Xampp.
+- Importamos el archivo .sql de la base de datos.
+- Introducir el comando "node index.js" en el terminal de Powershell.
 
 Con eso podreis arrancar la app.
 
