@@ -8,7 +8,8 @@ block content
                     form.form(action=`/admin_panel_categories/edit_action/${category_data.category_id}` method="POST" enctype="multipart/form-data" autocomplete="off" style="margin: 20px 0 20px 0;")    
                         h2 Edit category
                         div#register
-                            input(type="file", name="category_cover")
+                            label(for="category_cover") Insert cover 
+                            input(type="file", name="category_cover", id="category_cover" hidden)
                             input(type="text", name="category_name", placeholder="Category name", value=`${category_data.category_name}`)
                             input(type="text", name="category_description", placeholder="Category description", value=`${category_data.category_description}`)
                         div#create-btn-container

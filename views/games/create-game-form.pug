@@ -9,7 +9,8 @@ block content
                         h2 Add game
                         div#register
                             input(type="number", name="category_type", placeholder="Category type")
-                            input(type="file", name="game_cover")
+                            label(for="game_cover") Insert cover
+                            input(type="file", id="game_cover", name="game_cover" hidden)
                             input(type="text", name="game_name", placeholder="Game's name")
                             input(type="text", name="game_description", placeholder="Game's synopsis")
                             input(type="file" name="game_zip" accept=".zip" required)

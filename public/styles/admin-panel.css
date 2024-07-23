@@ -112,7 +112,7 @@
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 2em;
+    margin: 10px 0px 10px 0px;
 }
 
 .create-btn {

@@ -8,7 +8,8 @@ block content
                     form.form(action="/admin_panel_category/create_action" method="POST" enctype="multipart/form-data")    
                         h2 Add category
                         div#register
-                            input(type="file", name="category_cover")
+                            label(for="category_cover") Insert cover 
+                            input(type="file", name="category_cover", id="category_cover" hidden)
                             input(type="text", name="category_name", placeholder="Category's name")
                             input(type="text", name="category_description", placeholder="Category's description")
                         div#create-btn-container

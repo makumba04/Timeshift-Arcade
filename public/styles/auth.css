@@ -10,7 +10,7 @@
 
 .form {
   width: 50%;
-  height: 400px;
+  height: 430px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -28,12 +28,16 @@
 }
 
 #login, #register {
+  box-sizing: content-box;
+  height: fit-content;
   display: flex;
   flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
-input {
-  width: 20em;
+input, label {
+  width: 20rem;
   height: 1.6em;
   color: white;
   margin: 10px 0 10px 0;
@@ -53,7 +57,24 @@ input:focus::placeholder{
   color: transparent;
 }
 
+label {
+  display: flex; 
+  font-family: monospace;
+  align-items: center; 
+  color: white;
+}
+
+label:hover {
+  cursor: pointer;
+}
+
+select {
+  width: 25em;
+}
+
 textarea {
+  width: 20rem;
+  margin: 5px 0px 5px 0px;
   padding: 5px;
   color: white;
   background-color: rgba(0, 0, 0, 0.5);
@@ -90,5 +111,5 @@ select {
 }
 
 #bigger-form {
-  height: 450px;
+  height: 530px;
 }
