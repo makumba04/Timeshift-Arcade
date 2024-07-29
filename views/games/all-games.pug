@@ -1,0 +1,31 @@
+extends ../layouts/layout.pug
+
+block append head 
+    - var isGamesPage = true
+
+block content 
+    main
+        article
+            h2#categories-title Games
+            .content-wrapper-border
+                .content-wrapper
+                    #search-game-by-name
+                        input#input_name(type="text", placeholder="Introduce a name...")
+                        a#search-btn(onclick="searchGamesByName()")
+                            img(src="/images/search.png", alt="search-game", name="search-game")
+                    #games-container
+                        for game in games
+                            section.game-block
+                                    .game-desc 
+                                        img(src=`${game.cover_path}`, class="game-image")
+                                        div.game-desc-txt
+                                            h3 #{game.game_name}
+                                            p #{game.game_description}
+                                            a(href=`/games/${game.game_id}`)
+                                                button Play
+
+block scripts 
+    script.
+        var oldTitle = document.title;
+        var newTitle = oldTitle + ' - Games';
+        document.title = newTitle; 

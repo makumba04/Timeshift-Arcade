@@ -125,14 +125,23 @@ app.get('/uploadPFP/:userId', profileRoutes.uploadPFP);
 app.post('/uploadPFP/action/:userId', profileRoutes.uploadPFP_action);
 app.post('/add_edit_bio/action/:userId', profileRoutes.addEditUserBio_action);
 
-// -- CATEGORY ROUTES
-
-app.get('/categories', categoryRoutes.showAllCategories);
-
 // -- GAME ROUTES
 
+app.get('/allGames', gameRoutes.showAllGames);
 app.get('/games/:id', gameRoutes.showGameById);
-app.get('/games_category/:id', gameRoutes.showGamesByCategory);
+app.get('/gameByName/:gameName', (req, res) => {
+    const { gameName } = req.params;
+    db.query('SELECT * FROM game WHERE game_name LIKE ?', [`%${gameName}%`], (err, results) => {
+      if (err) throw err;
+      res.json(results);
+    });
+});
+app.get('/getAllGames', (req, res) => {
+    db.query('SELECT * FROM game', (err, results) => {  
+        if (err) throw err;
+        res.json(results);
+    });
+})
 
 // -- AUTH ROUTES
 

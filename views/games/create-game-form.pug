@@ -13,7 +13,8 @@ block content
                             input(type="file", id="game_cover", name="game_cover" hidden)
                             input(type="text", name="game_name", placeholder="Game's name")
                             input(type="text", name="game_description", placeholder="Game's synopsis")
-                            input(type="file" name="game_zip" accept=".zip" required)
+                            label(for="game_zip") Insert game files 
+                            input(type="file", id="game_zip", name="game_zip", accept=".zip" required hidden)
                             input(type="text", name="htp", placeholder="How to play?")
                             select(name='featured')
                                 option(value="default" selected hidden) Featured 

@@ -35,9 +35,33 @@ function searchUserGames(user_id) {
     .catch(error => console.error('Error:', error));
 }
 
+function searchGamesByName(gameName) {
+
+    var gameName = document.getElementById('input_name').value;
+
+    if (gameName == '') {
+
+        fetch(`http://localhost:3000/getAllGames`)
+        .then(response => response.json())
+        .then(data => {
+            showAllGamesList(data);
+        })
+        .catch(error => console.error('Error:', error));
+    } else {
+
+        fetch(`http://localhost:3000/gameByName/${gameName}`)
+        .then(response => response.json())
+        .then(data => {
+            console.log(data);
+            showGamesByName(data);
+        })
+        .catch(error => console.error('Error:', error));
+    }
+}
+
 // Data-showing functions: Receive all data from the Data-fetching functions and elaborate tables to show the resulting data
 
-function showAllCategories(categories) {
+function showAllCategories(categories) { // SOLO ADMIN PANEL
     
     const headers = [
         "ID", "Name", "Description", "Actions"
@@ -80,7 +104,7 @@ function showAllCategories(categories) {
     container.appendChild(a_create_btn)
 }
 
-function showAllGames(games) {
+function showAllGames(games) { // SOLO ADMIN PANEL
 
     const headers = [
         "ID", "Category Type", "Name", "Actions"
@@ -123,7 +147,7 @@ function showAllGames(games) {
     container.appendChild(a_create_btn);
 }
 
-function showAllUsers(users) {
+function showAllUsers(users) { // SOLO ADMIN PANEL
 
     const headers = [
         "ID", "Name", "Role Level", "Actions"
@@ -184,10 +208,10 @@ function showUserGames(games) {
             var div_game_desc = document.createElement('div');
             var img_game_image = document.createElement('img');
             var div_game_desc_txt = document.createElement('div');
-            var h3 = createElement('h3');
-            var p = createElement('p');
-            var a = createElement('a');
-            var button = createElement('button');
+            var h3 = document.createElement('h3');
+            var p = document.createElement('p');
+            var a = document.createElement('a');
+            var button = document.createElement('button');
 
             section_game_block.classList.add('game-block');
             div_game_desc.classList.add('game-desc');
@@ -222,5 +246,119 @@ function showUserGames(games) {
         linked_games.style.justifyContent = 'center';
         linked_games.style.alignItems = 'center';
         linked_games.append(p_no_games);
+    }
+}
+
+function showGamesByName(games) {
+
+    var gamesContainer = document.getElementById('games-container');
+
+    gamesContainer.innerHTML = '';
+
+    if(games.length > 0) {
+        
+        games.forEach(game => {
+
+            var section_game_block = document.createElement('section');
+            var div_game_desc = document.createElement('div');
+            var img_game_image = document.createElement('img');
+            var div_game_desc_txt = document.createElement('div');
+            var h3 = document.createElement('h3');
+            var p = document.createElement('p');
+            var a = document.createElement('a');
+            var button = document.createElement('button');
+
+            section_game_block.classList.add('game-block');
+            div_game_desc.classList.add('game-desc');
+            img_game_image.classList.add('game-image');
+            div_game_desc_txt.classList.add('game-desc-txt');
+
+            img_game_image.src = `${game.cover_path}`;
+            h3.innerHTML = `${game.game_name}`;
+            p.innerHTML = `${game.game_description}`;
+            a.href = `/games/${game.game_id}`;
+            button.innerHTML = 'Play';
+
+            a.appendChild(button);
+
+            div_game_desc_txt.append(h3);
+            div_game_desc_txt.append(p);
+            div_game_desc_txt.append(a);
+
+            div_game_desc.append(img_game_image);
+            div_game_desc.appendChild(div_game_desc_txt);
+
+            section_game_block.appendChild(div_game_desc);
+            gamesContainer.appendChild(section_game_block);
+        })
+    } else {
+        
+        gamesContainer.innerHTML = '';
+
+        const p_no_games = document.createElement('p');
+        const text = "No games were found...";
+        p_no_games.append(text);
+
+        gamesContainer.style.display = 'flex';
+        gamesContainer.style.justifyContent = 'center';
+        gamesContainer.style.alignItems = 'center';
+        gamesContainer.appendChild(p_no_games);
+    }
+}
+
+function showAllGamesList(games) {
+
+    var gamesContainer = document.getElementById('games-container');
+
+    gamesContainer.innerHTML = '';
+
+    if(games.length > 0) {
+        
+        games.forEach(game => {
+
+            var section_game_block = document.createElement('section');
+            var div_game_desc = document.createElement('div');
+            var img_game_image = document.createElement('img');
+            var div_game_desc_txt = document.createElement('div');
+            var h3 = document.createElement('h3');
+            var p = document.createElement('p');
+            var a = document.createElement('a');
+            var button = document.createElement('button');
+
+            section_game_block.classList.add('game-block');
+            div_game_desc.classList.add('game-desc');
+            img_game_image.classList.add('game-image');
+            div_game_desc_txt.classList.add('game-desc-txt');
+
+            img_game_image.src = `${game.cover_path}`;
+            h3.innerHTML = `${game.game_name}`;
+            p.innerHTML = `${game.game_description}`;
+            a.href = `/games/${game.game_id}`;
+            button.innerHTML = 'Play';
+
+            a.appendChild(button);
+
+            div_game_desc_txt.append(h3);
+            div_game_desc_txt.append(p);
+            div_game_desc_txt.append(a);
+
+            div_game_desc.append(img_game_image);
+            div_game_desc.appendChild(div_game_desc_txt);
+
+            section_game_block.appendChild(div_game_desc);
+            gamesContainer.appendChild(section_game_block);
+        })
+    } else {
+        
+        gamesContainer.innerHTML = '';
+
+        const p_no_games = document.createElement('p');
+        const text = "No games were found...";
+        p_no_games.append(text);
+
+        gamesContainer.style.display = 'flex';
+        gamesContainer.style.justifyContent = 'center';
+        gamesContainer.style.alignItems = 'center';
+        gamesContainer.appendChild(p_no_games);
     }
 }

@@ -175,10 +175,6 @@ article > * {
     text-align: center;
 }
 
-#games-by-category-container {
-    margin: 2.5em 0 5em 0;
-}
-
 .content-wrapper-border {
     width: 70%;
     padding: 3px;
@@ -260,6 +256,7 @@ article > * {
 
 .game-block {
     border: 1px solid black;
+    margin: 2em 0 2em 0;
     padding: 1em;
     box-sizing: border-box;
     background-color: rgba(115, 115, 115, 0.6);
@@ -404,4 +401,25 @@ footer {
 
 .profile-buttons button {
     margin: 5px;
+}
+
+#search-game-by-name {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+#search-btn {
+    width: 1em;
+    background-color: none;
+    color: none;
+    border: none;
+}
+
+#search-btn img{
+    width: 1.65em;
+    margin-left: 10px;
+    -webkit-filter: grayscale(1) invert(1);
+    filter: grayscale(1) invert(1);
 }

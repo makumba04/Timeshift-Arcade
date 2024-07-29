@@ -21,8 +21,12 @@ html(lang='en')
                     p#Timeshift-Header-Logo-2 
                         i an online retrogaming experience
                 ul 
-                    li
-                        a(href="/categories") Categories
+                    if isGamesPage
+                        li
+                            a(href="/") Home
+                    else
+                        li
+                            a(href="/allGames") Games
                     
                     if isLoggedIn
                         li

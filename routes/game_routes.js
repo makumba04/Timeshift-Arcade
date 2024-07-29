@@ -24,11 +24,10 @@ router.showGameById = function(req, res) {
     })
 }
 
-router.showGamesByCategory = function(req, res) {
-    const {id} = req.params;
-    db.query('SELECT * FROM game INNER JOIN category ON category.category_id = game.category_type WHERE game.category_type = ?', [id], (error, results) => {
+router.showAllGames = function(req, res) {
+    db.query('SELECT * FROM game ', (error, results) => {
         if (error) throw error;
-        res.render('games/games-by-category', {
+        res.render('games/all-games', {
             title: 'games',
             games: results,
             isLoggedIn: req.session.isLoggedIn,

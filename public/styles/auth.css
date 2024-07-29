@@ -62,6 +62,7 @@ label {
   font-family: monospace;
   align-items: center; 
   color: white;
+  font-size: 0.8em;
 }
 
 label:hover {
