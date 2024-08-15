@@ -23,7 +23,33 @@ const query = promisify(db.query).bind(db);
 // -- ROUTES
 
 // ADMIN PANEL
-router.renderAdminPanel = function (req, res) {res.render("admin-panel/admin-panel")};
+router.renderAdminPanel = function (req, res) {
+    db.query('SELECT * FROM category' , (error, results) => {
+        if (error) throw error;
+        res.render("admin-panel/admin-panel-categories", {
+            title: 'categories',
+            categories: results
+        });
+    })
+};
+router.renderAdminPanelGames = function (req, res) {
+    db.query('SELECT game.*, category.category_name FROM game INNER JOIN category ON game.category_type = category.category_id' , (error, results) => {
+        if (error) throw error;
+        res.render("admin-panel/admin-panel-games", {
+            title: 'games',
+            games: results
+        });
+    })
+};
+router.renderAdminPanelUsers = function (req, res) {
+    db.query('SELECT * FROM users' , (error, results) => {
+        if (error) throw error;
+        res.render("admin-panel/admin-panel-users", {
+            title: 'users',
+            users: results
+        });
+    })
+};
 
 // CREATE CATEGORY
 router.renderCreateCategoryForm = function (req, res) {res.render("categories/create-category-form")};
@@ -223,10 +249,10 @@ router.createGameAction = async (req, res) => {
 
         await query(createQuery, queryParams);
 
-        res.status(200).redirect(`/admin-panel?statusmessage=${encodeURIComponent('Game created successfully')}`);
+        res.status(200).redirect(`/admin-panel-games?statusmessage=${encodeURIComponent('Game created successfully')}`);
     } catch (error) {
         console.error('Error creating game: ', error);
-        res.status(500).redirect(`/admin-panel?statusmessage=${encodeURIComponent('An error occurred while creating the game')}`);
+        res.status(500).redirect(`/admin-panel-games?statusmessage=${encodeURIComponent('An error occurred while creating the game')}`);
     }
 }
 
@@ -362,10 +388,10 @@ router.editGameAction = async (req, res) => {
 
         await query(updateQuery, queryParams);
 
-        res.status(200).redirect(`/admin-panel?statusmessage=${encodeURIComponent('Game edited successfully')}`);
+        res.status(200).redirect(`/admin-panel-games?statusmessage=${encodeURIComponent('Game edited successfully')}`);
     } catch (error) {
         console.error('Error editing game: ', error);
-        res.status(500).redirect(`/admin-panel?statusmessage=${encodeURIComponent('An error occurred while editing the game')}`);
+        res.status(500).redirect(`/admin-panel-games?statusmessage=${encodeURIComponent('An error occurred while editing the game')}`);
     }
 };
 
@@ -388,10 +414,10 @@ router.confirmedGameDelete = async (req, res) => {
         await fsp.rm(`${sanitizedGamePath}`, { recursive: true, force: true })
         await query("DELETE FROM game WHERE game_id = ?", [gameId]);
         
-        res.status(200).redirect(`/admin-panel?statusmessage=${encodeURIComponent('Game deleted successfully')}`);
+        res.status(200).redirect(`/admin-panel-games?statusmessage=${encodeURIComponent('Game deleted successfully')}`);
     } catch (error) {
         console.error('Error deleting game: ', error);
-        res.status(500).redirect(`/admin-panel?statusmessage=${encodeURIComponent('An error occurred while deleting the game')}`);
+        res.status(500).redirect(`/admin-panel-games?statusmessage=${encodeURIComponent('An error occurred while deleting the game')}`);
     }
 }
 
@@ -412,10 +438,10 @@ router.createUserAction = async (req, res) => {
 
         await query(createQuery, queryParams);
 
-        res.status(200).redirect(`/admin-panel?statusmessage=${encodeURIComponent('User created successfully')}`);
+        res.status(200).redirect(`/admin-panel-users?statusmessage=${encodeURIComponent('User created successfully')}`);
     } catch (error) {
         console.error('Error creating user: ', error);
-        res.status(500).redirect(`/admin-panel?statusmessage=${encodeURIComponent('An error occurred while creating the category')}`);
+        res.status(500).redirect(`/admin-panel-users?statusmessage=${encodeURIComponent('An error occurred while creating the category')}`);
     }
 }
 
@@ -445,10 +471,10 @@ router.editUserAction = async (req, res) => {
 
         await query(updateQuery, queryParams);
 
-        res.status(200).redirect(`/admin-panel?statusmessage=${encodeURIComponent('User edited successfully')}`);
+        res.status(200).redirect(`/admin-panel-users?statusmessage=${encodeURIComponent('User edited successfully')}`);
     } catch (error) {
         console.error('Error editing user: ', error);
-        res.status(500).redirect(`/admin-panel?statusmessage=${encodeURIComponent('An error occurred while editing the user')}`);
+        res.status(500).redirect(`/admin-panel-users?statusmessage=${encodeURIComponent('An error occurred while editing the user')}`);
     }
 }
 
@@ -465,10 +491,10 @@ router.confirmedUserDelete = async (req, res) => {
         const { userId } = req.params;
         await query("DELETE FROM users WHERE user_id = ?", [userId]);
         
-        res.status(200).redirect(`/admin-panel?statusmessage=${encodeURIComponent('User deleted successfully')}`);
+        res.status(200).redirect(`/admin-panel-users?statusmessage=${encodeURIComponent('User deleted successfully')}`);
     } catch (error) {
         console.error('Error deleting user: ', error);
-        res.status(500).redirect(`/admin-panel?statusmessage=${encodeURIComponent('An error occurred while deleting the user')}`);
+        res.status(500).redirect(`/admin-panel-users?statusmessage=${encodeURIComponent('An error occurred while deleting the user')}`);
     }
 }
 

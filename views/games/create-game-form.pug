@@ -12,11 +12,11 @@ block content
                                 option(value="default" selected hidden) Category type
                                 for category in categories
                                     option(value=`${category.category_id}`) #{category.category_name}
-                            label(for="game_cover") Insert cover
-                            input(type="file", id="game_cover", name="game_cover" hidden)
+                            label#cover-file-name(for="game_cover") Insert cover
+                            input(type="file", id="game_cover", name="game_cover", hidden)
                             input(type="text", name="game_name", placeholder="Game's name")
                             input(type="text", name="game_description", placeholder="Game's synopsis")
-                            label(for="game_zip") Insert game files 
+                            label#zip-file-name(for="game_zip") Insert game files 
                             input(type="file", id="game_zip", name="game_zip", accept=".zip" required hidden)
                             input(type="text", name="htp", placeholder="How to play?")
                             select(name='featured')
@@ -25,7 +25,7 @@ block content
                                 option(value=0) No
                         div#create-btn-container
                             button.create-btn(type="submit") Create
-                            a(href="/admin-panel")
+                            a(href="/admin-panel-games")
                                 button(type="button") Cancel
     br
     br
@@ -36,5 +36,15 @@ block content
     br
 block scripts
     script.
+        document.getElementById('game_cover').addEventListener('change', function(){
+            var fileName = this.files[0] ? this.files[0].name : 'No file chosen';
+            document.getElementById('cover-file-name').textContent = fileName;
+        });
+
+        document.getElementById('game_zip').addEventListener('change', function(){
+            var fileName = this.files[0] ? this.files[0].name : 'No file chosen';
+            document.getElementById('zip-file-name').textContent = fileName;
+        });
+
         var newTitle = 'Add game';
         document.title = newTitle;

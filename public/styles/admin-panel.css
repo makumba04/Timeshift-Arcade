@@ -61,6 +61,11 @@
     color: rgb(200, 200, 200);
 }
 
+#admin-panel-sidemenu a {
+    color: white;
+    text-decoration: none;
+}
+
 #admin-panel-data {
     width: 100%;
     margin: 0;

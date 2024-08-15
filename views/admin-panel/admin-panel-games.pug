@@ -1,0 +1,61 @@
+extends ../layouts/layout-admin.pug
+
+block content
+    main#admin-panel-main
+        if statusmessage
+            .status-message
+                p statusmessage
+        h2 Manage everything from here, boss!
+        article#admin-panel-article
+            #admin-panel-sidemenu
+                .content-wrapper-border
+                    .content-wrapper
+                        ul
+                            li 
+                                a(href="/admin-panel")
+                                    h3 Categories
+                            li
+                                a(href='/admin-panel-games') 
+                                    h3 Games
+                            li
+                                a(href='/admin-panel-users') 
+                                    h3 Users
+            #admin-panel-data
+                .content-wrapper-border
+                        .content-wrapper
+                            #content-table
+                                table(style="margin-bottom: 45px;")
+                                    thead
+                                        tr
+                                            th ID
+                                            th Category type
+                                            th Name
+                                            th Actions
+                                    tbody
+                                        for game in games
+                                            tr
+                                                td #{game.game_id}
+                                                td #{game.category_name}
+                                                td #{game.game_name}
+                                                td.admin-panel-actions
+                                                    a(href=`/admin_panel_games/edit/${game.game_id}`)
+                                                        button#edit-btn Edit
+                                                    a(href=`/admin_panel_games/delete/confirm/${game.game_id}`)
+                                                        button#delete-btn Delete
+                                a(href="/admin_panel_games/create") 
+                                    button.create-btn Add new game
+
+block scripts
+    script.
+        var oldTitle = document.title;
+        var newTitle = oldTitle + ' - Admin panel - Categories';
+        document.title = newTitle;
+
+        const urlParams = new URLSearchParams(window.location.search);
+        const statusmessage = urlParams.get('statusmessage');
+        if (statusmessage) {
+            const statusDiv = document.createElement('div');
+            statusDiv.className = 'status-message';
+            statusDiv.innerHTML = `<p>${statusmessage}</p>`;
+            document.querySelector('#admin-panel-main').prepend(statusDiv);
+        }

@@ -69,6 +69,8 @@ app.get('/', function(req, res){
     }
 
     app.get('/admin-panel', requireAdmin, adminPanelRoutes.renderAdminPanel);
+    app.get('/admin-panel-games', requireAdmin, adminPanelRoutes.renderAdminPanelGames);
+    app.get('/admin-panel-users', requireAdmin, adminPanelRoutes.renderAdminPanelUsers);
 
     app.get('/admin_panel_categories', (req, res) => {
         db.query('SELECT * FROM category', (err, results) =>{
