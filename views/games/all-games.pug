@@ -11,8 +11,13 @@ block content
                 .content-wrapper
                     #search-game-by-name
                         input#input_name(type="text", placeholder="Introduce a name...")
+                        //- select(name="filter", id="filter")
+                        //-     option(value="default" selected hidden) Filter by...
+                        //-     for category in categories
+                        //-         option(value=`${category.category_id}`) #{category.category_name}
                         a#search-btn(onclick="searchGamesByName()")
                             img(src="/images/search.png", alt="search-game", name="search-game")
+                                
                     #games-container
                         for game in games
                             section.game-block

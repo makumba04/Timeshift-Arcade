@@ -162,7 +162,15 @@ router.confirmedCategoryDelete = async (req, res) => {
 }
 
 // CREATE GAME
-router.renderCreateGameForm = function (req, res) {res.render("games/create-game-form");}
+router.renderCreateGameForm = function (req, res) {
+    db.query('SELECT category_id, category_name FROM category', (err, results) => {
+        if (err) throw err;
+        res.render('games/create-game-form', {
+            title: 'categories',
+            categories: results
+        });
+    })
+}
 router.createGameAction = async (req, res) => {
     try {
         const game_zip = req.files.game_zip;

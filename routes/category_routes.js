@@ -15,12 +15,13 @@ const router = express.Router();
 router.showAllCategories = function(req, res) {
     db.query('SELECT * FROM category', (error, results) => {
         if (error) throw error;
-        res.render('categories/categories', {
+        res.render('games/all-games', {
             title: 'categories',
             categories: results,
             isLoggedIn: req.session.isLoggedIn,
             user_id: req.session.userId
         });
+        console.log(categories);
     })
 }
 

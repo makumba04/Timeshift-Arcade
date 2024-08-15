@@ -136,12 +136,6 @@ app.get('/gameByName/:gameName', (req, res) => {
       res.json(results);
     });
 });
-app.get('/getAllGames', (req, res) => {
-    db.query('SELECT * FROM game', (err, results) => {  
-        if (err) throw err;
-        res.json(results);
-    });
-})
 
 // -- AUTH ROUTES
 

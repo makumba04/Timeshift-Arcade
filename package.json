@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node index.js",
+    "dev": "nodemon --watch index.js"
   },
   "author": "Timeshift Team",
   "license": "ISC",
@@ -22,5 +23,8 @@
     "pug": "^3.0.2",
     "serve-favicon": "^2.5.0",
     "unzipper": "^0.11.6"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.4"
   }
 }

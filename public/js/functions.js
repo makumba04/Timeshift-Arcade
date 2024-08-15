@@ -35,24 +35,17 @@ function searchUserGames(user_id) {
     .catch(error => console.error('Error:', error));
 }
 
-function searchGamesByName(gameName) {
+function searchGamesByName() {
 
     var gameName = document.getElementById('input_name').value;
 
     if (gameName == '') {
-
-        fetch(`http://localhost:3000/getAllGames`)
-        .then(response => response.json())
-        .then(data => {
-            showAllGamesList(data);
-        })
-        .catch(error => console.error('Error:', error));
+        window.location.href = '/allGames';
     } else {
 
         fetch(`http://localhost:3000/gameByName/${gameName}`)
         .then(response => response.json())
         .then(data => {
-            console.log(data);
             showGamesByName(data);
         })
         .catch(error => console.error('Error:', error));
@@ -239,7 +232,7 @@ function showUserGames(games) {
     } else {
 
         const p_no_games = document.createElement('p');
-        const text = "There are no linked games";
+        const text = "No games were found...";
         p_no_games.append(text);
 
         linked_games.style.display = 'flex';

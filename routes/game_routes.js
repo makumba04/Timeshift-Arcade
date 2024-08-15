@@ -25,7 +25,7 @@ router.showGameById = function(req, res) {
 }
 
 router.showAllGames = function(req, res) {
-    db.query('SELECT * FROM game ', (error, results) => {
+    db.query('SELECT * FROM game', (error, results) => {
         if (error) throw error;
         res.render('games/all-games', {
             title: 'games',

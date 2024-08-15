@@ -8,7 +8,10 @@ block content
                     form#bigger-form.form(action="/admin_panel_games/create_action" method="POST" enctype="multipart/form-data")    
                         h2 Add game
                         div#register
-                            input(type="number", name="category_type", placeholder="Category type")
+                            select(name='category_type')
+                                option(value="default" selected hidden) Category type
+                                for category in categories
+                                    option(value=`${category.category_id}`) #{category.category_name}
                             label(for="game_cover") Insert cover
                             input(type="file", id="game_cover", name="game_cover" hidden)
                             input(type="text", name="game_name", placeholder="Game's name")

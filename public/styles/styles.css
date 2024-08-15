@@ -423,3 +423,9 @@ footer {
     -webkit-filter: grayscale(1) invert(1);
     filter: grayscale(1) invert(1);
 }
+
+#filter {
+    margin: 0 10px 0 10px;
+    font-size: 1.2em;
+    width: 15em;
+}
