@@ -1,8 +1,11 @@
 const express = require('express')
+const path = require('path')
+
 const app = express()
 
+// HOME
 app.get('/', (req, res) => {
-    res.send('Hello World!')
+    res.sendFile('index.html', {root: __dirname})
 })
 
 app.listen(3000, () => {
