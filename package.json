@@ -1,0 +1,24 @@
+{
+  "name": "timeshift-arcade",
+  "version": "1.0.0",
+  "description": "A retro arch experience to revive your old favourites.",
+  "homepage": "https://github.com/makumba04/TimeShift-Arcade#readme",
+  "bugs": {
+    "url": "https://github.com/makumba04/TimeShift-Arcade/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/makumba04/TimeShift-Arcade.git"
+  },
+  "license": "GPL-3.0-or-later",
+  "author": "Pablo Cabello Ruz",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "express": "^5.1.0",
+    "sqlite": "^5.1.1"
+  }
+}
