@@ -1,0 +1,33 @@
+body {
+    color: white;
+    background: #000c96;
+    background: linear-gradient(0deg, rgba(0, 12, 150, 1) 0%, rgba(0, 23, 77, 1) 37%, rgba(0, 0, 0, 1) 100%);
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+header {
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    padding: 10px 15px 10px 15px;
+    justify-content: space-between;
+    border-top: 2px solid limegreen;
+    border-bottom: 2px solid limegreen;
+    background-color: rgba(0, 0, 0, 0.15);
+    backdrop-filter: blur(10px);
+}
+
+header img {
+    width: 20em;
+    image-rendering: pixelated;
+}
+
+header ul li a {
+    color: white;
+    text-decoration: none;
+}
+
+main {
+    border: 1px solid black;
+}

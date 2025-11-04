@@ -6,14 +6,19 @@ router.get("/", (req, res) => {
     res.render("index", { title: "Home" });
 })
 
-// GAME LIST
-router.get("/gamelist", (req, res) => {
-    res.render("gamelist", { title: "Your games - Timeshift Arcade" });
+// PROFILE
+router.get("/profile", (req, res) => {
+    res.render("profile", { title: "Your profile - TimeShift Arcade"});
+})
+
+// PROFILE CONFIGURATION
+router.get("/profile_config", (req, res) => {
+    res.render("profile_config", { title: "Profile configuration - TimeShift Arcade"});
 })
 
 // GAME VIEWER
 router.get("/gameview", (req, res) => {
-    res.render("game", { title: "Gamename - Timeshift Arcade"});
+    res.render("game", { title: "Gamename - TimeShift Arcade"});
 })
 
 module.exports = router;

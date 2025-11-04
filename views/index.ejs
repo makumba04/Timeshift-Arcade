@@ -2,13 +2,26 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <script src="/js/flickity.pkgd.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="/stylesheets/reset.css">
+    <link rel="stylesheet" type="text/css" href="/stylesheets/styles.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><%= title %></title>
 </head>
 
 <body>
-    <p>Hello World!</p>
-    <a href="/gamelist"><p>GAMES!</p></a>
-    <a href=""><p>PROFILE!</p></a>
+    <header>
+        <a href="/"><img src="/assets/tsa_logo.png" alt="timeshift_arcade_logo"></a>
+        <ul>
+            <li><a href="/profile">Profile</a></li>
+        </ul>
+    </header>
+    <main>
+        <div class="main-carousel">
+            <div class="carousel-cell">1</div>
+            <div class="carousel-cell">2</div>
+            <div class="carousel-cell">3</div>
+        </div>
+    </main>
 </body>
 </html>

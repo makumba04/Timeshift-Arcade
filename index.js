@@ -6,11 +6,11 @@ app.set("views", "views");
 app.set("view engine", "ejs");
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
-app.use(express.static("public"));
+app.use(express.static(__dirname + "/public"));
 
 // HOME
 app.use('/', indexRouter);
 
 app.listen(3000, () => {
-    console.log('Shits running boss! Reporting on port 3000!')
+    console.log('She is running boss! Reporting on port 3000!')
 })
