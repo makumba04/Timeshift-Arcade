@@ -1,56 +1,204 @@
+:root {
+    --TimePink: #F72585;
+    --TimePurple: #7209B7;
+    --TimeDarkBlue: #140438;
+    --TimeBlue: #4361EE;
+    --TimeLight: #4CC9F0;
+}
+
 @font-face {
     font-family: Minecraftia;
     src: url(../fonts/Minecraftia-Regular.ttf);
 }
 
-body {
+html, body {
+    width: 100vw;
+    height: 100vh;
+    margin: 0;
+    padding: 0;
     font-family: Minecraftia;
     color: white;
     background: #000c96;
     background: linear-gradient(0deg, rgba(0, 12, 150, 1) 0%, rgba(0, 23, 77, 1) 37%, rgba(0, 0, 0, 1) 100%);
     background-size: cover;
     background-repeat: no-repeat;
-}
-
-header {
     display: flex;
-    align-items: center;
-    flex-direction: row;
-    padding: 15px 25px 15px 25px;
-    justify-content: space-between;
-    border-top: 2px solid #32cd32;
-    border-bottom: 2px solid limegreen;
-    background-color: rgba(0, 0, 0, 0.15);
-    backdrop-filter: blur(10px);
+    flex-direction: column;
+    overflow: hidden;
 }
 
-header img {
-    width: 20em;
-    image-rendering: pixelated;
-}
+/* HEADER (BEGIN) */
 
-header ul a {
-    text-decoration: none;
-}
+    header {
+        display: flex;
+        align-items: center;
+        flex-direction: row;
+        padding: 15px 25px 15px 25px;
+        justify-content: space-between;
+        border-top: 2px solid #32cd32;
+        border-bottom: 2px solid limegreen;
+        background-color: rgba(0, 0, 0, 0.15);
+        backdrop-filter: blur(10px);
+        flex-shrink: 0;
+    }
 
-header ul li {
-    padding: 15px;
-    color: white;
-    font-size: 1.2em;
-    border: 1px solid limegreen;
-    transition: all 0.1s ease-in-out;
-}
+    header img {
+        width: 20em;
+        image-rendering: pixelated;
+    }
 
-header ul li:hover {
-    box-shadow: 0px 0px 10px 2px rgba(50,205,50,0.75);
-    -webkit-box-shadow: 0px 0px 10px 2px rgba(50,205,50,0.75);
-    -moz-box-shadow: 0px 0px 10px 2px rgba(50,205,50,0.75);
-}
+    header ul {
+        display: flex;
+        flex-direction: row;
+    }
 
-header ul li:hover p{
-    filter: drop-shadow(0px 0px 5px #FFFFFF);
-}
+    header ul a {
+        text-decoration: none;
+        margin-left: 5px;
+    }
 
-main {
-    border: 1px solid black;
-}
+    header ul li {
+        padding: 15px;
+        color: white;
+        font-size: 1.2em;
+        border: 1px solid limegreen;
+        transition: all 0.1s ease-in-out;
+    }
+
+    header ul li:hover {
+        box-shadow: 0px 0px 10px 2px rgba(50,205,50,0.75);
+        -webkit-box-shadow: 0px 0px 10px 2px rgba(50,205,50,0.75);
+        -moz-box-shadow: 0px 0px 10px 2px rgba(50,205,50,0.75);
+    }
+
+    header ul li:hover p{
+        filter: drop-shadow(0px 0px 5px #FFFFFF);
+    }
+
+/* HEADER (END) */
+
+/* MAIN (BEGIN) */
+    
+    main {
+        flex: 1;
+        overflow: hidden;
+        position: relative;
+    }
+
+    #profile-frame {
+        width: 75%;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+
+    #profile-main {
+        width: 100%;
+    }
+
+    #profile-metadata {
+        width: 100%;
+        display: flex;
+        position: relative;
+        flex-direction: row;
+        min-height: 400px;
+    }
+
+    #profile-metadata img {
+        position: absolute;
+        left: 2%;
+        top: 5%;
+        width: 25%;
+        border-radius: 50%;
+        border: 1px solid black;
+    }
+
+    #profile-desc {
+        width: 75%;
+        margin-left: 30%;
+        border: 1px solid white;
+        padding: 1%;
+    }
+
+/* MAIN (END)*/
+
+/* FLICKITY CAROUSEL (BEGIN) */
+
+    .main-carousel {
+        width: 100%;
+        height: 100%;
+    }
+
+    .carousel-cell {
+        display: flex;
+        margin: 10% 4% 0 4%;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .showcase-frame {
+        display: flex;
+        flex-direction: row;
+        background: #130080;
+        background: linear-gradient(45deg, #F72585, #7209B7, #4361EE, #4CC9F0);
+        padding: 2px;
+    }
+
+    .showcase-main {
+        display: flex;
+        flex-direction: row;
+        text-align: center;
+        background-color: rgba(85, 85, 85, 0.75);
+    }
+
+    .showcase-main img {
+        width: 25%;
+        margin: 0 2px 0 0;
+        object-fit: contain;
+    }
+
+    .showcase-metadata {
+        display: flex;
+        flex-direction: column;
+        text-align: left;
+        padding: 1%;
+    }
+
+    .showcase-metadata h1 {
+        font-size: 2em;
+        margin: 0 0 15px 0;
+    }
+
+    .showcase-metadata a {
+        width: 5em;
+        border: 2px solid white;
+        text-align: center;
+        text-decoration: none;
+        color: white;
+        padding: 5px;
+        position: absolute;
+        bottom: 4%;
+        right: 2%;
+    }
+
+    #game-metadata {
+        border: 1px solid white;
+        position: relative;
+    }
+
+    #game-view {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        width: 800px;
+        height: 600px;
+        background-color: black;
+        border: 1px solid white;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+/* FLICKITY CAROUSEL (END) */

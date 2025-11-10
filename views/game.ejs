@@ -2,12 +2,26 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <link rel="icon" type="image/x-icon" href="/assets/favicon.ico">
+    <link rel="stylesheet" type="text/css" href="/stylesheets/reset.css">
+    <link rel="stylesheet" type="text/css" href="/stylesheets/styles.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><%= title %></title>
 </head>
 
 <body>
-    <h1>Game title</h1>
-    <p>This is a game example!</p>  
+    <header>
+        <a href="/"><img src="/assets/tsa_logo.png" alt="timeshift_arcade_logo"></a>
+        <ul>
+            <a href="/profile"><li><p>Profile</p></li></a>
+            <a href="/"><li><p>Back to home</p></li></a>
+        </ul>
+    </header>
+    <main>
+        <div id="game-view">
+            <h1>Game title</h1>
+            <p>This is a game example!</p>  
+        </div>
+    </main>
 </body>
 </html>

@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <script src="/js/flickity.js"></script>
+    <link rel="icon" type="image/x-icon" href="/assets/favicon.ico">
     <link rel="stylesheet" type="text/css" href="/stylesheets/reset.css">
     <link rel="stylesheet" type="text/css" href="/stylesheets/styles.css">
     <link rel="stylesheet" type="text/css" href="/stylesheets/flickity.css">
@@ -18,10 +19,21 @@
         </ul>
     </header>
     <main>
-        <div class="main-carousel js-flickity" data-flickity='{"wrapAround": true, "contain": true }'>
-            <div class="carousel-cell"><img src="/assets/fuckUmean.webp" alt=""></div>
-            <div class="carousel-cell"><img src="/assets/fuckUmean.webp" alt=""></div>
-            <div class="carousel-cell"><img src="/assets/fuckUmean.webp" alt=""></div>
+        <div class="main-carousel js-flickity" data-flickity='{ "wrapAround": true, "contain": true, "pageDots": false }'>
+            <% for (let i = 0; i < 3; i++) { %>
+                <div class="carousel-cell">
+                    <div class="showcase-frame">
+                        <div class="showcase-main">
+                            <img src="/assets/sample.webp" alt="">
+                            <div id="game-metadata" class="showcase-metadata">
+                                <h1>This is a game title!</h1>
+                                <p> This is a game description! Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ipsa eaque quasi ut odit? Esse blanditiis, facere, dolorum iusto atque animi obcaecati, accusantium tempore fugiat amet exercitationem recusandae velit sunt officiis.</p>
+                                <a href="/gameview">Button!</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            <% } %>
         </div>
     </main>
 </body>

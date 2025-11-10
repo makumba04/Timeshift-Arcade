@@ -2,12 +2,33 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <link rel="icon" type="image/x-icon" href="/assets/favicon.ico">
+    <link rel="stylesheet" type="text/css" href="/stylesheets/reset.css">
+    <link rel="stylesheet" type="text/css" href="/stylesheets/styles.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><%= title %></title>
 </head>
 
 <body>
-    <h1>This is your profile!</h1>
-    <p>Hello World!</p>    
+    <header>
+        <a href="/"><img src="/assets/tsa_logo.png" alt="timeshift_arcade_logo"></a>
+        <ul>
+            <a href="/"><li><p>Back to home</p></li></a>
+        </ul>
+    </header>
+    <main>
+        <div id="profile-frame" class="showcase-frame">
+            <div id="profile-main" class="showcase-main">
+                <div id="profile-metadata" class="showcase-metadata">
+                    <img src="/assets/pfptest.jpg" alt="">
+                    <div id="profile-desc">
+                        <h1>This is a profile!</h1>
+                        <p>Hello World!</p>
+                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Porro vero dolore iusto maiores quibusdam nisi fuga id. Molestiae, mollitia labore, omnis beatae praesentium eveniet eos in culpa ullam rerum rem.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main> 
 </body>
 </html>
